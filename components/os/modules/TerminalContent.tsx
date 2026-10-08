@@ -280,7 +280,7 @@ export function TerminalContent() {
                 <span>View Official Resume</span>
                 <ExternalLink className="w-3 h-3" />
               </a>
-              <a href="/Anunay_Resume.pdf" download="Anunay_Chhapre_Resume.pdf" className="px-3 py-1 rounded bg-white/10 text-foreground border border-white/20 hover:bg-white/20 transition-colors">
+              <a href="/Anunay Resume.pdf" download="Anunay Resume.pdf" className="px-3 py-1 rounded bg-white/10 text-foreground border border-white/20 hover:bg-white/20 transition-colors">
                 Download PDF
               </a>
             </div>

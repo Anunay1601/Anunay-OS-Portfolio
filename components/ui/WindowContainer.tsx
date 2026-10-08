@@ -35,7 +35,7 @@ export function WindowContainer({
       {/* Window Header Bar */}
       <div className="h-10 px-4 bg-surface-hover/80 border-b border-border flex items-center justify-between select-none">
         {/* Mac OS Window Traffic Lights */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 -ml-1 px-1.5 py-1 rounded-lg group/traffic cursor-pointer select-none">
           {onClose && (
             <button
               type="button"
@@ -44,9 +44,10 @@ export function WindowContainer({
                 onClose();
               }}
               aria-label="Close window"
-              className="w-4 h-4 rounded-full bg-[#FF5F56] hover:brightness-90 flex items-center justify-center group cursor-pointer border-none outline-none transition-transform hover:scale-110 active:scale-95"
+              title="Close"
+              className="w-3.5 h-3.5 rounded-full bg-[#FF5F56] hover:brightness-95 flex items-center justify-center cursor-pointer border-none outline-none transition-transform duration-75 hover:scale-110 active:scale-90 relative before:absolute before:-inset-2 before:content-[''] before:rounded-full"
             >
-              <X className="w-2.5 h-2.5 text-red-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <X className="w-2.5 h-2.5 text-[#4D0000] stroke-[2.5] opacity-0 group-hover/traffic:opacity-100 transition-none" />
             </button>
           )}
           {onMinimize && (
@@ -57,9 +58,10 @@ export function WindowContainer({
                 onMinimize();
               }}
               aria-label="Minimize window"
-              className="w-4 h-4 rounded-full bg-[#FFBD2E] hover:brightness-90 flex items-center justify-center group cursor-pointer border-none outline-none transition-transform hover:scale-110 active:scale-95"
+              title="Minimize"
+              className="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] hover:brightness-95 flex items-center justify-center cursor-pointer border-none outline-none transition-transform duration-75 hover:scale-110 active:scale-90 relative before:absolute before:-inset-2 before:content-[''] before:rounded-full"
             >
-              <Minus className="w-2.5 h-2.5 text-amber-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Minus className="w-2.5 h-2.5 text-[#5A3B00] stroke-[2.5] opacity-0 group-hover/traffic:opacity-100 transition-none" />
             </button>
           )}
           {onMaximize && (
@@ -70,9 +72,10 @@ export function WindowContainer({
                 onMaximize();
               }}
               aria-label="Maximize window"
-              className="w-4 h-4 rounded-full bg-[#27C93F] hover:brightness-90 flex items-center justify-center group cursor-pointer border-none outline-none transition-transform hover:scale-110 active:scale-95"
+              title="Zoom / Maximize"
+              className="w-3.5 h-3.5 rounded-full bg-[#27C93F] hover:brightness-95 flex items-center justify-center cursor-pointer border-none outline-none transition-transform duration-75 hover:scale-110 active:scale-90 relative before:absolute before:-inset-2 before:content-[''] before:rounded-full"
             >
-              <Maximize2 className="w-2.5 h-2.5 text-emerald-950 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Maximize2 className="w-2 h-2 text-[#004D11] stroke-[2.5] opacity-0 group-hover/traffic:opacity-100 transition-none" />
             </button>
           )}
         </div>

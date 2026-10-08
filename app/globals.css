@@ -7,25 +7,22 @@
     --background: #F5F5F7;
     --foreground: #1D1D1F;
     --surface-1: #FFFFFF;
-    --surface-2: #F0F2F5;
-    --surface-3: #E4E7EB;
+    --surface-2: #F2F2F7;
+    --surface-3: #E5E5EA;
     --muted: #8E8E93;
-    --muted-foreground: #55555C;
-    --border-color: rgba(0, 0, 0, 0.1);
-    --font-sans: var(--font-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-heading: var(--font-heading), 'Space Grotesk', sans-serif;
-    --font-mono: var(--font-mono), 'JetBrains Mono', monospace;
+    --muted-foreground: #6C6C70;
+    --border-color: rgba(0, 0, 0, 0.08);
   }
 
   .dark {
-    --background: #08090C;
+    --background: #0B0C10;
     --foreground: #F5F5F7;
-    --surface-1: #111318;
-    --surface-2: #17191F;
-    --surface-3: #222630;
+    --surface-1: #12141A;
+    --surface-2: #181B22;
+    --surface-3: #222632;
     --muted: #71717A;
-    --muted-foreground: #B5B8C5;
-    --border-color: rgba(255, 255, 255, 0.14);
+    --muted-foreground: #9EA3B0;
+    --border-color: rgba(255, 255, 255, 0.08);
   }
 
   * {
@@ -35,39 +32,55 @@
   html, body {
     background-color: var(--background);
     color: var(--foreground);
-    font-family: var(--font-sans);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 }
 
 /* Crisp Vector Text & Subpixel Font Rendering */
 .crisp-text,
 .os-window-content {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: geometricPrecision;
+  text-rendering: optimizeLegibility;
 }
 
-/* Glassmorphism utility classes */
+/* Glassmorphism utility classes - Apple Calm & Elegant */
 .apple-glass {
-  background: rgba(17, 19, 24, 0.75);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 20, 26, 0.78);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.24);
 }
 
 .light .apple-glass {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Apple Card Surface */
+.apple-card {
+  background: var(--surface-1);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.apple-card:hover {
+  border-color: rgba(10, 132, 255, 0.3);
+}
+
+/* Focus Visible Accessibility */
+:focus-visible {
+  outline: 2px solid #0A84FF;
+  outline-offset: 2px;
 }
 
 /* Custom crisp scrollbars */
@@ -81,12 +94,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(161, 161, 170, 0.3);
+  background: rgba(140, 140, 150, 0.25);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(161, 161, 170, 0.5);
+  background: rgba(140, 140, 150, 0.45);
 }
 
 /* Hide scrollbar helper */
@@ -98,4 +111,220 @@
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
 }
+
+/* Apple Liquid Glass Utility Classes - VisionOS & macOS Capsule Inspired */
+.apple-liquid-dock {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(20px) saturate(210%);
+  -webkit-backdrop-filter: blur(20px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.1),
+    0 20px 50px -10px rgba(0, 0, 0, 0.18),
+    0 0 35px 0 rgba(10, 132, 255, 0.15);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.dark .apple-liquid-dock {
+  border-radius: 9999px;
+  background: rgba(6, 9, 18, 0.42);
+  backdrop-filter: blur(20px) saturate(210%);
+  -webkit-backdrop-filter: blur(20px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.38),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.65),
+    0 24px 60px -10px rgba(0, 0, 0, 0.7),
+    0 0 45px 0 rgba(10, 132, 255, 0.22);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+/* Apple Liquid Glass Search Capsule - VisionOS Inspired */
+.apple-liquid-search {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(18px) saturate(200%);
+  -webkit-backdrop-filter: blur(18px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.06),
+    0 4px 20px -2px rgba(0, 0, 0, 0.08),
+    0 0 20px 0 rgba(10, 132, 255, 0.06);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-liquid-search:hover {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(10, 132, 255, 0.45);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95),
+    0 6px 24px -2px rgba(10, 132, 255, 0.15),
+    0 0 24px 0 rgba(10, 132, 255, 0.12);
+}
+
+.dark .apple-liquid-search {
+  background: rgba(14, 18, 28, 0.45);
+  backdrop-filter: blur(18px) saturate(200%);
+  -webkit-backdrop-filter: blur(18px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 1.5px 0 rgba(0, 0, 0, 0.5),
+    0 6px 24px -4px rgba(0, 0, 0, 0.4),
+    0 0 24px 0 rgba(10, 132, 255, 0.1);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .apple-liquid-search:hover {
+  background: rgba(20, 26, 42, 0.55);
+  border-color: rgba(10, 132, 255, 0.4);
+  box-shadow:
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.32),
+    0 8px 30px -4px rgba(0, 0, 0, 0.5),
+    0 0 30px 0 rgba(10, 132, 255, 0.2);
+}
+
+/* Apple Liquid Glass Spotlight Command Palette */
+.apple-liquid-palette {
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.08),
+    0 30px 80px -15px rgba(0, 0, 0, 0.25),
+    0 0 40px 0 rgba(10, 132, 255, 0.12);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.dark .apple-liquid-palette {
+  border-radius: 28px;
+  background: rgba(8, 12, 22, 0.52);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.6),
+    0 35px 85px -15px rgba(0, 0, 0, 0.7),
+    0 0 50px 0 rgba(10, 132, 255, 0.18);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Apple Liquid Glass Floating Capsule Button */
+.apple-liquid-float-btn {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(210%);
+  -webkit-backdrop-filter: blur(24px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.08),
+    0 16px 40px -6px rgba(0, 0, 0, 0.2),
+    0 0 25px 0 rgba(10, 132, 255, 0.15);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-liquid-float-btn:hover {
+  background: rgba(255, 255, 255, 0.62);
+  border-color: rgba(10, 132, 255, 0.5);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 1),
+    0 24px 50px -8px rgba(10, 132, 255, 0.3),
+    0 0 35px 0 rgba(10, 132, 255, 0.25);
+}
+
+.dark .apple-liquid-float-btn {
+  border-radius: 9999px;
+  background: rgba(7, 10, 20, 0.52);
+  backdrop-filter: blur(24px) saturate(210%);
+  -webkit-backdrop-filter: blur(24px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.6),
+    0 20px 50px -8px rgba(0, 0, 0, 0.65),
+    0 0 30px 0 rgba(10, 132, 255, 0.22);
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dark .apple-liquid-float-btn:hover {
+  background: rgba(12, 17, 32, 0.65);
+  border-color: rgba(10, 132, 255, 0.45);
+  box-shadow:
+    inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.45),
+    0 28px 60px -8px rgba(0, 0, 0, 0.75),
+    0 0 45px 0 rgba(10, 132, 255, 0.35);
+}
+
+.liquid-glass-btn {
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.liquid-glass-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.1) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  border-radius: 12px 12px 100% 100% / 8px 8px 3px 3px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.dark .liquid-glass-btn::before {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.05) 70%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Reduced Motion Overrides */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
 

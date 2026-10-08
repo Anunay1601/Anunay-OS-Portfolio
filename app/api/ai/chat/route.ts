@@ -2,8 +2,43 @@ import { NextResponse } from "next/server";
 import { getVerifiedPortfolioContext } from "@/lib/ai/portfolioContext";
 import { generatePortfolioFallbackResponse } from "@/lib/ai/fallbackEngine";
 
+// Lightweight in-memory rate limiter (sliding window)
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute
+const MAX_REQUESTS_PER_WINDOW = 20;
+
+function isRateLimited(identifier: string): boolean {
+  const now = Date.now();
+  const record = rateLimitMap.get(identifier);
+
+  if (!record || now > record.resetTime) {
+    rateLimitMap.set(identifier, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return false;
+  }
+
+  if (record.count >= MAX_REQUESTS_PER_WINDOW) {
+    return true;
+  }
+
+  record.count += 1;
+  return false;
+}
+
 export async function POST(req: Request) {
   try {
+    // Basic IP rate limiting check
+    const clientIp =
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+      req.headers.get("x-real-ip") ||
+      "anonymous";
+
+    if (isRateLimited(clientIp)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please wait a moment before sending another query." },
+        { status: 429 }
+      );
+    }
+
     const body = await req.json();
     const { messages } = body;
 
@@ -14,7 +49,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const lastUserMessage = [...messages].reverse().find((m) => m.role === "user");
+    // Sanitize and bound payload: max 15 messages, max 1000 chars per message
+    const boundedMessages = messages.slice(-15).map((m: any) => ({
+      role: m?.role === "assistant" ? "assistant" : "user",
+      content: typeof m?.content === "string" ? m.content.slice(0, 1000) : "",
+    }));
+
+    const lastUserMessage = [...boundedMessages].reverse().find((m) => m.role === "user");
     const userQuery = lastUserMessage ? lastUserMessage.content : "";
 
     const apiKey = process.env.OPENAI_API_KEY;
@@ -34,10 +75,7 @@ export async function POST(req: Request) {
             model: "gpt-4o-mini",
             messages: [
               { role: "system", content: systemPrompt },
-              ...messages.map((m: any) => ({
-                role: m.role === "assistant" ? "assistant" : "user",
-                content: m.content,
-              })),
+              ...boundedMessages,
             ],
             temperature: 0.2,
             max_tokens: 600,
@@ -55,8 +93,8 @@ export async function POST(req: Request) {
             source: "openai",
           });
         }
-      } catch (err) {
-        console.warn("OpenAI API call failed, using verified portfolio fallback:", err);
+      } catch {
+        // Fallback gracefully without leaking error
       }
     }
 
@@ -67,10 +105,9 @@ export async function POST(req: Request) {
       message: fallbackResponse,
       source: "portfolio-data",
     });
-  } catch (error) {
-    console.error("AI Route Error:", error);
+  } catch {
     return NextResponse.json(
-      { error: "Internal server error processing AI request." },
+      { error: "Unable to process AI request at this time." },
       { status: 500 }
     );
   }

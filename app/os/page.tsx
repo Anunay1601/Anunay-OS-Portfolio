@@ -45,6 +45,17 @@ export default function OSDesktopPage() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Automatically open target module when navigated via /os?open=id
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const targetModule = params.get("open") as WindowId | null;
+      if (targetModule && windows[targetModule]) {
+        openWindow(targetModule);
+      }
+    }
+  }, [openWindow, windows]);
+
   const openWindows = Object.values(windows).filter(
     (win) => win.isOpen && !win.isMinimized
   );

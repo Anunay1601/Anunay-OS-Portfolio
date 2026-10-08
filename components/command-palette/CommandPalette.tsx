@@ -111,128 +111,156 @@ export function CommandPalette({ isOpen, onClose, onSelectModule }: CommandPalet
       router.push(`/${item.sectionHash}`);
     } else if (item.windowId === "resume") {
       router.push("/resume");
+    } else if (item.windowId) {
+      router.push(`/os?open=${item.windowId}`);
     } else {
       router.push("/os");
-      if (item.windowId) {
-        setTimeout(() => onSelectModule(item.windowId!), 100);
-      }
     }
   };
 
-  if (!isOpen) return null;
-
   return (
     <AnimatePresence>
-      <div
-        className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/70 backdrop-blur-md"
-        onClick={onClose}
-      >
+      {isOpen && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: -12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: -12 }}
-          transition={{ duration: 0.15, ease: "easeOut" }}
-          onClick={(e) => e.stopPropagation()}
-          className="w-full max-w-xl rounded-2xl border border-white/20 dark:border-white/10 bg-white/95 dark:bg-[#10131E]/95 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col crisp-text select-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
+          className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/50"
+          onClick={onClose}
         >
-          {/* Header Search Bar */}
-          <div className="h-13 px-4 border-b border-border/80 flex items-center gap-3 bg-surface-hover/40">
-            <Search className="w-4.5 h-4.5 text-accent-blue shrink-0" />
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder="Type to search commands (Projects, Skills, Terminal...)"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent text-sm font-sans text-foreground placeholder:text-muted-foreground focus:outline-none"
-            />
-            <kbd className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-mono bg-surface border border-border rounded text-muted-foreground">
-              ESC
-            </kbd>
-            <button
-              onClick={onClose}
-              className="p-1 rounded-apple-sm text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
-              aria-label="Close Command Palette"
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Command Search Palette"
+            initial={{ opacity: 0, scale: 0.98, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.98, y: -8 }}
+            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-xl apple-liquid-palette overflow-hidden flex flex-col crisp-text select-none relative shadow-2xl"
+          >
+            {/* Top specular reflection glare line */}
+            <div className="absolute inset-x-10 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/40 to-transparent pointer-events-none z-20" />
+
+            {/* Header Search Bar with generous Apple padding & precise icon alignment */}
+            <div className="h-16 px-4 sm:px-6 border-b border-black/5 dark:border-white/10 flex items-center gap-2 sm:gap-3.5 bg-white/20 dark:bg-white/[0.03]">
+              <Search className="w-5 h-5 text-accent-blue shrink-0" />
+              <input
+                ref={inputRef}
+                type="text"
+                role="combobox"
+                aria-expanded={filtered.length > 0}
+                aria-autocomplete="list"
+                aria-controls="command-palette-results"
+                aria-label="Search modules and commands"
+                placeholder="Type to search..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="flex-1 min-w-0 bg-transparent text-sm sm:text-base font-sans font-medium text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+              />
+              <kbd className="hidden sm:inline-block px-2.5 py-1 text-[11px] font-mono rounded-full bg-white/50 dark:bg-white/10 border border-white/40 dark:border-white/15 text-muted-foreground shrink-0 shadow-2xs">
+                ESC
+              </kbd>
+              <button
+                onClick={onClose}
+                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full shrink-0 flex items-center justify-center bg-white/30 dark:bg-white/10 hover:bg-white/50 dark:hover:bg-white/20 border border-white/30 dark:border-white/15 text-muted-foreground hover:text-foreground transition-all duration-200 cursor-pointer ml-1"
+                aria-label="Close Command Palette"
+              >
+                <X className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+              </button>
+            </div>
+
+            {/* Filtered Commands List */}
+            <div
+              id="command-palette-results"
+              role="listbox"
+              aria-label="Search results"
+              className="max-h-80 overflow-y-auto p-2.5 sm:p-3 space-y-1.5 scroll-smooth"
             >
-              <X className="w-4 h-4" />
-            </button>
-          </div>
+              {filtered.length === 0 ? (
+                <div className="p-8 text-center text-xs font-mono text-muted-foreground">
+                  No matching modules or commands found.
+                </div>
+              ) : (
+                filtered.map((item, idx) => {
+                  const Icon = item.icon;
+                  const isFocused = idx === selectedIndex;
 
-          {/* Filtered Commands List */}
-          <div className="max-h-80 overflow-y-auto p-2 space-y-1">
-            {filtered.length === 0 ? (
-              <div className="p-8 text-center text-xs font-mono text-muted-foreground">
-                No matching modules or commands found.
-              </div>
-            ) : (
-              filtered.map((item, idx) => {
-                const Icon = item.icon;
-                const isFocused = idx === selectedIndex;
-
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => executeSelection(item)}
-                    onMouseEnter={() => setSelectedIndex(idx)}
-                    className={`w-full p-3 rounded-apple-lg flex items-center justify-between text-left cursor-pointer transition-all duration-150 border ${
-                      isFocused
-                        ? "bg-accent-blue/15 border-accent-blue/40 shadow-sm"
-                        : "border-transparent hover:bg-surface/50"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3.5">
-                      <div
-                        className={`w-9 h-9 rounded-apple-md flex items-center justify-center transition-colors ${
-                          isFocused
-                            ? "bg-accent-blue text-white"
-                            : "bg-surface border border-border/70 text-accent-blue"
-                        }`}
-                      >
-                        <Icon className="w-4.5 h-4.5" />
-                      </div>
-                      <div>
+                  return (
+                    <div
+                      key={item.id}
+                      role="option"
+                      aria-selected={isFocused}
+                      tabIndex={0}
+                      onClick={() => executeSelection(item)}
+                      onMouseEnter={() => setSelectedIndex(idx)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          executeSelection(item);
+                        }
+                      }}
+                      className={`w-full p-2.5 sm:p-3 rounded-2xl flex items-center justify-between text-left cursor-pointer transition-all duration-150 ease-out hover:translate-x-0.5 border ${
+                        isFocused
+                          ? "bg-accent-blue/15 dark:bg-accent-blue/25 border-accent-blue/40 shadow-[0_4px_20px_rgba(10,132,255,0.2),_inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                          : "border-transparent hover:bg-white/20 dark:hover:bg-white/[0.06] hover:border-white/20 dark:border-white/10"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3.5 min-w-0">
                         <div
-                          className={`text-xs font-bold tracking-tight font-sans ${
-                            isFocused ? "text-accent-blue" : "text-foreground"
+                          className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all liquid-glass-btn shrink-0 ${
+                            isFocused
+                              ? "bg-gradient-to-tr from-accent-blue to-indigo-600 text-white shadow-md shadow-accent-blue/35 border border-white/40"
+                              : "bg-white/40 dark:bg-white/10 border border-white/40 dark:border-white/15 text-accent-blue"
                           }`}
                         >
-                          {item.title}
+                          <Icon className="w-5 h-5 relative z-10" />
                         </div>
-                        <div className="text-[11px] font-sans text-muted-foreground">
-                          {item.subtitle}
+                        <div className="min-w-0">
+                          <div
+                            className={`text-xs sm:text-sm font-semibold tracking-tight font-sans truncate ${
+                              isFocused ? "text-accent-blue dark:text-sky-300" : "text-foreground"
+                            }`}
+                          >
+                            {item.title}
+                          </div>
+                          <div className="text-[11px] font-sans text-muted-foreground truncate">
+                            {item.subtitle}
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-2">
-                      {isFocused && (
-                        <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-mono text-accent-blue font-semibold">
-                          <span>Press</span>
-                          <CornerDownLeft className="w-3 h-3" />
-                        </span>
-                      )}
-                      <ArrowRight
-                        className={`w-4 h-4 transition-transform ${
-                          isFocused ? "text-accent-blue translate-x-0.5" : "text-muted-foreground/50"
-                        }`}
-                      />
+                      <div className="flex items-center gap-2 shrink-0 pl-2">
+                        {isFocused && (
+                          <span className="hidden sm:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-accent-blue/20 border border-accent-blue/35 text-[10px] font-mono text-accent-blue font-semibold">
+                            <span>Press</span>
+                            <CornerDownLeft className="w-3 h-3" />
+                          </span>
+                        )}
+                        <ArrowRight
+                          className={`w-4 h-4 transition-transform duration-150 ${
+                            isFocused ? "text-accent-blue translate-x-0.5" : "text-muted-foreground/40"
+                          }`}
+                        />
+                      </div>
                     </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
+                  );
+                })
+              )}
+            </div>
 
-          {/* Footer Access Tips */}
-          <div className="px-4 py-2 bg-surface/40 border-t border-border/60 flex items-center justify-between text-[10px] font-mono text-muted-foreground">
-            <span className="flex items-center gap-1.5 font-semibold text-foreground">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span>ANUNAY OS Index</span>
-            </span>
-            <span className="hidden sm:inline">Use ↑ ↓ arrows to navigate • Enter to launch</span>
-          </div>
+            {/* Footer Access Tips */}
+            <div className="px-6 py-2.5 bg-white/10 dark:bg-black/25 border-t border-black/5 dark:border-white/10 flex items-center justify-between text-[10px] font-mono text-muted-foreground">
+              <span className="flex items-center gap-1.5 font-semibold text-foreground">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#34d399]" />
+                <span>ANUNAY OS Index</span>
+              </span>
+              <span className="hidden sm:inline">Use ↑ ↓ arrows to navigate • Enter to launch</span>
+            </div>
+          </motion.div>
         </motion.div>
-      </div>
+      )}
     </AnimatePresence>
   );
 }

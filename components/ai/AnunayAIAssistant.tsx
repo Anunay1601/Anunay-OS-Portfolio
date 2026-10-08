@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
@@ -57,10 +58,17 @@ export function AnunayAIAssistant() {
     }
   }, [messages, isLoading, isOpen]);
 
-  // Focus input on expand
+  // Focus input on expand & listen for Escape to close
   useEffect(() => {
     if (isOpen) {
       setTimeout(() => inputRef.current?.focus(), 100);
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") {
+          setIsOpen(false);
+        }
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
     }
   }, [isOpen]);
 
@@ -190,16 +198,23 @@ export function AnunayAIAssistant() {
             animate={{ opacity: 1, scale: 1, y: 0, transformOrigin: "bottom right" }}
             exit={{ opacity: 0, scale: 0.08, y: 30, transformOrigin: "bottom right" }}
             transition={{ type: "spring", stiffness: 340, damping: 26, mass: 0.6 }}
-            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[520px] max-h-[82vh] rounded-3xl border border-white/30 dark:border-white/20 bg-white/95 dark:bg-[#0C0E1A]/95 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.5)] flex flex-col overflow-hidden mb-3 crisp-text"
+            id="anunay-ai-dialog"
+            role="dialog"
+            aria-modal="false"
+            aria-label="ANUNAY AI Assistant"
+            className="w-[calc(100vw-2rem)] sm:w-[400px] h-[520px] max-h-[82vh] rounded-3xl apple-liquid-palette overflow-hidden flex flex-col mb-3 crisp-text relative shadow-[0_30px_70px_rgba(0,0,0,0.5)]"
           >
+            {/* Top specular reflection glare line */}
+            <div className="absolute inset-x-8 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/35 to-transparent pointer-events-none z-20" />
+
             {/* Assistant Header */}
-            <div className="p-3.5 px-4 border-b border-border/80 bg-surface-hover/50 flex items-center justify-between shrink-0">
+            <div className="p-3.5 px-4 border-b border-black/5 dark:border-white/10 bg-white/20 dark:bg-white/[0.04] backdrop-blur-md flex items-center justify-between shrink-0">
               <div className="flex items-center gap-2.5">
                 <div className="relative">
-                  <div className="w-8 h-8 rounded-apple-md bg-gradient-to-tr from-accent-blue to-accent-violet flex items-center justify-center text-white shadow-xs">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet flex items-center justify-center text-white shadow-xs overflow-hidden border border-white/30">
                     <Sparkles className="w-4 h-4" />
                   </div>
-                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-background animate-pulse" />
+                  <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white/50 dark:ring-black/50 shadow-[0_0_6px_#10b981]" />
                 </div>
                 <div>
                   <h3 className="text-xs font-bold text-foreground font-sans tracking-tight flex items-center gap-1.5">
@@ -216,7 +231,7 @@ export function AnunayAIAssistant() {
               <div className="flex items-center gap-1">
                 <button
                   onClick={handleClearHistory}
-                  className="p-1.5 rounded-apple-sm text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
                   title="Clear chat history"
                   aria-label="Clear chat"
                 >
@@ -224,7 +239,7 @@ export function AnunayAIAssistant() {
                 </button>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="p-1.5 rounded-apple-sm text-muted-foreground hover:text-foreground hover:bg-surface transition-colors"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-2 transition-colors"
                   aria-label="Minimize assistant"
                 >
                   <ChevronDown className="w-4 h-4" />
@@ -233,7 +248,7 @@ export function AnunayAIAssistant() {
             </div>
 
             {/* Suggested Question Chips */}
-            <div className="px-3 py-2 border-b border-border/60 bg-surface/30 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
+            <div className="px-3 py-2 border-b border-border-color bg-surface-2/30 flex items-center gap-1.5 overflow-x-auto no-scrollbar shrink-0">
               <span className="text-[9px] font-mono text-accent-blue font-bold shrink-0 flex items-center gap-1">
                 <Zap className="w-3 h-3" />
                 <span>TRY:</span>
@@ -243,7 +258,7 @@ export function AnunayAIAssistant() {
                   key={q}
                   onClick={() => handleSendMessage(q)}
                   disabled={isLoading}
-                  className="px-2.5 py-1 rounded-full text-[10px] font-sans font-medium bg-surface/80 hover:bg-accent-blue/15 hover:text-accent-blue hover:border-accent-blue/40 border border-border/80 text-muted-foreground transition-all shrink-0 active:scale-95 disabled:opacity-50"
+                  className="px-2.5 py-1 rounded-full text-[10px] font-sans font-medium bg-surface-1 hover:bg-accent-blue/15 hover:text-accent-blue hover:border-accent-blue/40 border border-border-color text-muted-foreground transition-all shrink-0 active:scale-95 disabled:opacity-50"
                 >
                   {q}
                 </button>
@@ -264,28 +279,25 @@ export function AnunayAIAssistant() {
                   >
                     {/* Avatar */}
                     <div
-                      className={`w-6 h-6 rounded-apple-sm flex items-center justify-center shrink-0 text-[10px] font-mono font-bold mt-0.5 ${
-                        isUser
+                      className={`w-6 h-6 rounded-lg flex items-center justify-center shrink-0 text-[10px] font-mono font-bold mt-0.5 ${isUser
                           ? "bg-accent-blue text-white"
-                          : "bg-surface border border-border/80 text-accent-blue"
-                      }`}
+                          : "bg-surface-2 border border-border-color text-accent-blue"
+                        }`}
                     >
                       {isUser ? <User className="w-3.5 h-3.5" /> : <Bot className="w-3.5 h-3.5" />}
                     </div>
 
                     {/* Bubble Container */}
                     <div
-                      className={`max-w-[84%] p-3 rounded-2xl ${
-                        isUser
-                          ? "bg-accent-blue text-white rounded-tr-xs shadow-xs"
-                          : "bg-surface/90 border border-border/80 text-foreground rounded-tl-xs shadow-xs"
-                      }`}
+                      className={`max-w-[84%] p-3 rounded-2xl ${isUser
+                          ? "bg-accent-blue text-white shadow-xs"
+                          : "bg-surface-2/90 border border-border-color text-foreground shadow-xs"
+                        }`}
                     >
                       <div className="leading-relaxed font-sans">{renderFormattedContent(msg.content)}</div>
                       <div
-                        className={`text-[9px] font-mono mt-1 text-right ${
-                          isUser ? "text-white/70" : "text-muted-foreground"
-                        }`}
+                        className={`text-[9px] font-mono mt-1 text-right ${isUser ? "text-white/70" : "text-muted-foreground"
+                          }`}
                       >
                         {msg.timestamp}
                       </div>
@@ -301,10 +313,10 @@ export function AnunayAIAssistant() {
                   animate={{ opacity: 1, y: 0 }}
                   className="flex items-center gap-2"
                 >
-                  <div className="w-6 h-6 rounded-apple-sm bg-surface border border-border/80 text-accent-blue flex items-center justify-center shrink-0">
+                  <div className="w-6 h-6 rounded-lg bg-surface-2 border border-border-color text-accent-blue flex items-center justify-center shrink-0">
                     <Bot className="w-3.5 h-3.5" />
                   </div>
-                  <div className="px-3.5 py-2.5 rounded-2xl rounded-tl-xs bg-surface/90 border border-border/80 flex items-center gap-1">
+                  <div className="px-3.5 py-2.5 rounded-2xl bg-surface-2/90 border border-border-color flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-bounce [animation-delay:0ms]" />
                     <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-bounce [animation-delay:150ms]" />
                     <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-bounce [animation-delay:300ms]" />
@@ -329,7 +341,7 @@ export function AnunayAIAssistant() {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="p-3 border-t border-border/80 bg-surface/40 flex items-center gap-2 shrink-0"
+              className="p-3 border-t border-border-color bg-surface-2/40 flex items-center gap-2 shrink-0"
             >
               <input
                 ref={inputRef}
@@ -337,12 +349,12 @@ export function AnunayAIAssistant() {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Ask ANUNAY AI a question..."
-                className="flex-1 px-3 py-2 rounded-apple-md bg-surface border border-border/80 text-xs font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-accent-blue/60"
+                className="flex-1 px-3 py-2 rounded-xl bg-surface-1 border border-border-color text-xs font-sans text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent-blue/50"
               />
               <button
                 type="submit"
                 disabled={!input.trim() || isLoading}
-                className="p-2 rounded-apple-md bg-accent-blue text-white hover:bg-accent-blue/90 disabled:opacity-40 disabled:hover:bg-accent-blue transition-colors cursor-pointer shrink-0"
+                className="p-2 rounded-xl bg-accent-blue text-white hover:bg-accent-blue/90 disabled:opacity-40 disabled:hover:bg-accent-blue transition-colors cursor-pointer shrink-0"
                 aria-label="Send message"
               >
                 <Send className="w-3.5 h-3.5" />
@@ -355,20 +367,31 @@ export function AnunayAIAssistant() {
       {/* Floating Assistant Launcher Button */}
       <motion.button
         onClick={() => setIsOpen((prev) => !prev)}
-        whileHover={{ scale: 1.06, y: -2 }}
-        whileTap={{ scale: 0.94 }}
-        className="flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full border border-white/40 dark:border-white/20 bg-white/95 dark:bg-[#101322]/95 backdrop-blur-2xl text-foreground shadow-[0_12px_36px_rgba(0,0,0,0.35)] hover:border-accent-blue/60 hover:shadow-accent-blue/20 transition-all cursor-pointer group"
+        whileHover={{ scale: 1.05, y: -6 }}
+        whileTap={{ scale: 0.95, y: 0 }}
+        aria-expanded={isOpen}
+        aria-controls="anunay-ai-dialog"
+        className="apple-liquid-float-btn relative overflow-hidden flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 cursor-pointer group"
         aria-label="Toggle ANUNAY AI Assistant"
       >
+        {/* Top Specular Glare Reflection Line */}
+        <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/40 to-transparent pointer-events-none" />
+
+        {/* Ambient Hover Glow Aura */}
+        <div className="absolute -inset-1 rounded-full bg-accent-blue/15 dark:bg-accent-blue/20 blur-md pointer-events-none opacity-60 group-hover:opacity-100 group-hover:bg-accent-blue/30 transition-all duration-300 -z-10" />
+
+        {/* Liquid Glass Icon Orb */}
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet flex items-center justify-center text-white shadow-md shrink-0"
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet flex items-center justify-center text-white shadow-md shadow-accent-blue/30 shrink-0 overflow-hidden border border-white/40"
         >
-          <Sparkles className="w-4 h-4" />
-          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-background animate-pulse" />
+          {/* Specular inner lens sheen */}
+          <span className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/10 pointer-events-none" />
+          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 relative z-10" />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-1.5 ring-white/60 dark:ring-black/60 shadow-[0_0_6px_#34d399] z-20" />
         </motion.div>
-        <span className="font-sans text-xs sm:text-sm font-extrabold tracking-tight pr-0.5 text-foreground">
+        <span className="font-sans text-[11px] sm:text-xs font-bold tracking-tight pr-0.5 text-foreground">
           ANUNAY AI
         </span>
       </motion.button>

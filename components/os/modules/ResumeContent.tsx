@@ -16,7 +16,7 @@ export function ResumeContent() {
           </h3>
           <p className="text-xs text-muted-foreground">Anunay Chhapre — Verified Curriculum Vitae</p>
         </div>
-        <a href="/Anunay_Resume.pdf" download="Anunay_Chhapre_Resume.pdf" target="_blank" rel="noopener noreferrer">
+        <a href="/Anunay Resume.pdf" download="Anunay Resume.pdf" target="_blank" rel="noopener noreferrer">
           <Button variant="primary" size="sm">
             <Download className="w-3.5 h-3.5" />
             <span>Download PDF</span>

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WindowId } from "@/hooks/useOSStore";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   Cpu,
   FolderGit2,
@@ -114,6 +115,8 @@ export function DesktopWallpaper({
     return () => clearInterval(interval);
   }, []);
 
+  const prefersReducedMotion = useReducedMotion();
+
   // Ambient Floating Particle Grid Canvas
   useEffect(() => {
     if (hasActiveWindow) return;
@@ -130,13 +133,13 @@ export function DesktopWallpaper({
       canvas.width = canvas.parentElement.clientWidth || window.innerWidth;
       canvas.height = canvas.parentElement.clientHeight || window.innerHeight;
       
-      particles = Array.from({ length: 40 }, () => ({
+      particles = Array.from({ length: 30 }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        radius: Math.random() * 2 + 1,
-        alpha: Math.random() * 0.4 + 0.1,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
+        radius: Math.random() * 1.8 + 1,
+        alpha: Math.random() * 0.35 + 0.1,
       }));
     };
 
@@ -148,21 +151,25 @@ export function DesktopWallpaper({
       const isDark = document.documentElement.classList.contains("dark");
 
       particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
+        if (!prefersReducedMotion) {
+          p.x += p.vx;
+          p.y += p.vy;
 
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+          if (p.y < 0) p.y = canvas.height;
+          if (p.y > canvas.height) p.y = 0;
+        }
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isDark ? `rgba(10, 132, 255, ${p.alpha})` : `rgba(0, 0, 0, ${p.alpha * 0.5})`;
+        ctx.fillStyle = isDark ? `rgba(10, 132, 255, ${p.alpha})` : `rgba(0, 0, 0, ${p.alpha * 0.4})`;
         ctx.fill();
       });
 
-      animId = requestAnimationFrame(render);
+      if (!prefersReducedMotion && !document.hidden) {
+        animId = requestAnimationFrame(render);
+      }
     };
 
     render();
@@ -171,7 +178,7 @@ export function DesktopWallpaper({
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
     };
-  }, [hasActiveWindow]);
+  }, [hasActiveWindow, prefersReducedMotion]);
 
   return (
     <AnimatePresence>
@@ -198,71 +205,75 @@ export function DesktopWallpaper({
           </div>
 
           {/* Central Holographic Emblem Badge */}
-          <div className="my-auto py-6 flex flex-col items-center text-center space-y-4 max-w-2xl">
+          <div className="my-auto py-2 flex flex-col items-center text-center space-y-3 max-w-3xl w-full">
             {/* Glowing Multi-Layer Emblem Core */}
             <div
-              className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center group cursor-pointer"
+              className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group cursor-pointer"
               onClick={onOpenCommandPalette}
               title="Open Command Search (⌘K)"
             >
-              {/* Outer Rotating Radar Orbit */}
-              <div className="absolute inset-0 rounded-full border border-dashed border-accent-blue/40 animate-spin [animation-duration:12s]" />
-              <div className="absolute -inset-3 rounded-full border border-white/10 dark:border-white/5 animate-spin [animation-duration:20s] [animation-direction:reverse]" />
+              {/* Outer Radar Orbit */}
+              <div className="absolute inset-0 rounded-full border border-dashed border-accent-blue/30 animate-spin [animation-duration:18s]" />
+              <div className="absolute -inset-2 rounded-full border border-black/8 dark:border-white/10 animate-spin [animation-duration:30s] [animation-direction:reverse]" />
 
               {/* Luminous Glow Backdrop */}
-              <div className="absolute inset-1 rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet blur-xl opacity-50 group-hover:opacity-80 transition-opacity duration-300" />
+              <div className="absolute inset-1 rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet blur-xl opacity-35 group-hover:opacity-60 transition-opacity duration-300" />
 
               {/* Central Glass Card Icon */}
-              <div className="relative w-full h-full rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet p-0.5 shadow-2xl transition-transform duration-300 group-hover:scale-105">
-                <div className="w-full h-full rounded-[22px] bg-background/30 backdrop-blur-xl flex items-center justify-center text-white font-mono font-black text-4xl sm:text-5xl tracking-tighter shadow-inner">
-                  A
+              <div className="relative w-full h-full rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet p-0.5 shadow-2xl transition-transform duration-300 group-hover:scale-104">
+                <div className="w-full h-full rounded-[22px] bg-white/40 dark:bg-[#0E111B]/60 backdrop-blur-2xl flex items-center justify-center overflow-hidden shadow-inner relative">
+                  <img
+                    src="/anunay-cutout.png"
+                    alt="Anunay Chhapre"
+                    className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                  />
                 </div>
               </div>
             </div>
 
             {/* Emblem Text & System Badging */}
-            <div className="space-y-2">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/25 text-accent-blue text-xs font-mono font-bold">
-                <Zap className="w-3.5 h-3.5 animate-pulse text-accent-blue" />
-                <span>ANUNAY OS v1.0 KERNEL</span>
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent-blue/10 border border-accent-blue/30 text-accent-blue text-xs font-mono font-bold shadow-xs">
+                <Zap className="w-3.5 h-3.5 text-accent-blue" />
+                <span>ANUNAY OS KERNEL</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold tracking-tight text-foreground font-sans">
-                Interactive Desktop Workstation
+                Interactive Workstation
               </h2>
               <p className="text-xs sm:text-sm text-muted-foreground font-mono max-w-md mx-auto">
-                All windows minimized • Select a system module below or press <kbd className="px-1.5 py-0.5 rounded bg-surface border border-border text-foreground font-bold">⌘K</kbd>
+                All windows minimized • Select a system module below or press <kbd className="px-1.5 py-0.5 rounded bg-surface-2 border border-border-color text-foreground font-bold">⌘K</kbd>
               </p>
             </div>
 
             {/* VisionOS Style Launch Cards Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 w-full pt-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5 w-full pt-1">
               {QUICK_MODULES.map((mod) => {
                 const Icon = mod.icon;
                 return (
                   <button
                     key={mod.id}
                     onClick={() => onOpenWindow(mod.id)}
-                    className="p-3.5 rounded-apple-xl border border-white/20 dark:border-white/10 bg-white/60 dark:bg-[#10131E]/70 backdrop-blur-2xl text-left transition-all duration-200 group hover:border-accent-blue/50 hover:bg-surface-hover hover:scale-102 hover:shadow-xl shadow-sm flex items-start justify-between cursor-pointer"
+                    className="p-3.5 rounded-2xl border border-white/40 dark:border-white/12 bg-white/85 dark:bg-[#121626]/85 backdrop-blur-2xl text-left transition-all duration-200 group hover:border-accent-blue/60 hover:bg-white dark:hover:bg-[#161a2e] hover:shadow-[0_10px_30px_rgba(10,132,255,0.2)] hover:-translate-y-0.5 shadow-sm flex items-center justify-between cursor-pointer"
                   >
-                    <div className="space-y-1.5 min-w-0 pr-2">
-                      <div className="flex items-center gap-2">
-                        <div className={`w-8 h-8 rounded-apple-md bg-gradient-to-tr ${mod.gradient} flex items-center justify-center shrink-0 border shadow-xs`}>
-                          <Icon className="w-4 h-4" />
-                        </div>
-                        <span className="text-xs font-bold text-foreground font-sans truncate group-hover:text-accent-blue transition-colors">
+                    <div className="flex items-center gap-3 min-w-0 pr-2">
+                      <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${mod.gradient} flex items-center justify-center shrink-0 border border-white/20 shadow-md text-white`}>
+                        <Icon className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="min-w-0">
+                        <span className="text-xs font-bold text-foreground font-sans truncate block group-hover:text-accent-blue transition-colors">
                           {mod.title}
                         </span>
+                        <p className="text-[11px] text-muted-foreground font-sans line-clamp-1">
+                          {mod.subtitle}
+                        </p>
                       </div>
-                      <p className="text-[11px] text-muted-foreground font-sans line-clamp-1">
-                        {mod.subtitle}
-                      </p>
                     </div>
 
-                    <div className="flex flex-col items-end justify-between self-stretch shrink-0">
-                      <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-surface/80 border border-border/80 text-muted-foreground">
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[9px] font-mono font-bold px-2 py-0.5 rounded-full bg-accent-blue/10 dark:bg-accent-blue/20 border border-accent-blue/25 text-accent-blue">
                         {mod.badge}
                       </span>
-                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-accent-blue group-hover:translate-x-0.5 transition-all" />
+                      <ArrowRight className="w-4 h-4 text-accent-blue/70 group-hover:text-accent-blue group-hover:translate-x-1 transition-all" />
                     </div>
                   </button>
                 );
@@ -274,13 +285,13 @@ export function DesktopWallpaper({
           <div className="w-full max-w-md pb-2">
             <button
               onClick={onOpenCommandPalette}
-              className="w-full px-4 py-2.5 rounded-2xl bg-white/70 dark:bg-[#121624]/80 border border-white/30 dark:border-white/20 hover:border-accent-blue/50 backdrop-blur-2xl text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-between text-xs font-mono shadow-lg hover:shadow-xl group"
+              className="w-full px-4 py-2.5 rounded-2xl bg-white/85 dark:bg-[#121624]/90 border border-white/40 dark:border-white/15 hover:border-accent-blue/50 backdrop-blur-2xl text-muted-foreground hover:text-foreground transition-all duration-200 flex items-center justify-between text-xs font-mono shadow-md hover:shadow-lg group cursor-pointer"
             >
               <div className="flex items-center gap-2">
-                <Search className="w-4 h-4 text-accent-blue group-hover:scale-110 transition-transform" />
+                <Search className="w-4 h-4 text-accent-blue group-hover:scale-105 transition-transform" />
                 <span className="font-sans font-medium text-xs">Search ANUNAY OS commands & projects...</span>
               </div>
-              <kbd className="px-2 py-0.5 text-[10px] font-mono font-bold bg-surface rounded border border-border text-foreground">
+              <kbd className="px-2 py-0.5 text-[10px] font-mono font-bold bg-surface-2 rounded border border-border-color text-foreground">
                 ⌘K
               </kbd>
             </button>

@@ -5,11 +5,13 @@ import Link from "next/link";
 import { Navigation } from "@/components/Navigation";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { CommandPalette } from "@/components/command-palette/CommandPalette";
+import { AboutLogoModal } from "@/components/modals/AboutLogoModal";
 import { profileData } from "@/data/profile";
 import { Search } from "lucide-react";
 
 export function Header() {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [isLogoModalOpen, setIsLogoModalOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -27,12 +29,19 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur-xl transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Logo / Brand */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 group focus:outline-none"
+        <button
+          type="button"
+          onClick={() => setIsLogoModalOpen(true)}
+          className="flex items-center gap-2 group focus:outline-none cursor-pointer text-left"
+          title="Click to open ANUNAY OS Logo & System Overview"
+          aria-label="Open ANUNAY OS Logo and System Information"
         >
-          <div className="w-7 h-7 rounded-apple-sm bg-gradient-to-tr from-accent-blue to-accent-violet flex items-center justify-center text-white text-xs font-bold font-mono shadow-sm group-hover:scale-105 transition-transform duration-200">
-            A
+          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 group-hover:scale-110 group-hover:shadow-[0_0_18px_rgba(56,189,248,0.5)] transition-all duration-300 relative border border-white/10">
+            <img
+              src="/anunay-os-logo.png"
+              alt="ANUNAY OS Logo"
+              className="w-full h-full object-contain"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold tracking-tight text-foreground group-hover:text-accent-blue transition-colors">
@@ -42,7 +51,7 @@ export function Header() {
               Portfolio v1.0
             </span>
           </div>
-        </Link>
+        </button>
 
         {/* Center/Right Nav Controls */}
         <div className="flex items-center gap-2.5">
@@ -71,6 +80,12 @@ export function Header() {
         isOpen={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
         onSelectModule={() => {}}
+      />
+
+      {/* About ANUNAY OS Logo Modal */}
+      <AboutLogoModal
+        isOpen={isLogoModalOpen}
+        onClose={() => setIsLogoModalOpen(false)}
       />
     </header>
   );

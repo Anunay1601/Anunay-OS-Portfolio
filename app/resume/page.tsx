@@ -24,7 +24,7 @@ export default function ResumePage() {
           </Button>
         </Link>
         <div className="flex items-center gap-3">
-          <a href="/Anunay_Resume.pdf" download="Anunay_Chhapre_Resume.pdf" target="_blank" rel="noopener noreferrer">
+          <a href="/Anunay Resume.pdf" download="Anunay Resume.pdf" target="_blank" rel="noopener noreferrer">
             <Button variant="primary" size="sm">
               <Download className="w-4 h-4" />
               <span>Download PDF</span>
@@ -35,7 +35,7 @@ export default function ResumePage() {
 
       {/* Clean Document View */}
       <WindowContainer
-        title="Anunay_Chhapre_Resume.pdf"
+        title="Anunay Resume.pdf"
         subtitle="Verified Official Document"
         icon={<FileText className="w-4 h-4 text-accent-blue" />}
       >
