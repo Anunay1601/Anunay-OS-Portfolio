@@ -39,7 +39,7 @@ export function ResumeContent() {
 
         <div className="space-y-1">
           <span className="font-mono font-bold text-accent-blue uppercase block">Key Internships</span>
-          <p className="text-foreground">Software Engineer Intern @ Datatrack (Mar–Jun 2026)</p>
+          <p className="text-foreground">Software Engineer Intern @ Datatrack (Mar–May 2026)</p>
           <p className="text-foreground">Full Stack Developer Intern @ Quantumard Technologies (Dec 2025–Jan 2026)</p>
           <p className="text-foreground">Virtual Internship @ ServiceNow University & SmartBridge (Jul 2026)</p>
         </div>

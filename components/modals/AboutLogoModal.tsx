@@ -104,16 +104,16 @@ export function AboutLogoModal({ isOpen, onClose, onLaunchOS }: AboutLogoModalPr
                 <motion.div
                   animate={{ scale: isZoomed ? 1.35 : 1 }}
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl p-2 bg-black/40 dark:bg-black/60 border border-white/20 shadow-[0_10px_30px_rgba(0,0,0,0.4),inset_0_1px_1px_rgba(255,255,255,0.2)] flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105"
+                  className="relative w-28 h-28 sm:w-36 sm:h-36 rounded-2xl bg-[#070913] border border-cyan-500/30 shadow-[0_12px_36px_rgba(10,132,255,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] flex items-center justify-center overflow-hidden transition-transform group-hover:scale-105"
                 >
                   <img
-                    src="/anunay-os-logo.png"
+                    src="/anunay-os-logo-v2.png"
                     alt="ANUNAY OS Official Emblem Logo"
-                    className="w-full h-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)]"
+                    className="w-full h-full object-cover drop-shadow-[0_4px_16px_rgba(0,0,0,0.6)]"
                   />
                   {/* Subtle hover overlay hint */}
-                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-2xl">
-                    <ZoomIn className="w-4 h-4 text-white/90 drop-shadow" />
+                  <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity rounded-2xl">
+                    <ZoomIn className="w-5 h-5 text-white/90 drop-shadow" />
                   </div>
                 </motion.div>
                 <span className="text-[10px] font-mono text-muted-foreground mt-1.5 block group-hover:text-cyan-400 transition-colors">

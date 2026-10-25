@@ -264,15 +264,8 @@ export function NeuralCore() {
         }}
       >
         <SolarSystem
-          centerLogo={
-            <div className="flex flex-col items-center justify-center">
-              <Cpu className="w-5 h-5 sm:w-7 sm:h-7 text-cyan-400 animate-pulse" />
-              <span className="text-[8px] sm:text-[9px] font-mono font-bold tracking-widest text-cyan-300 mt-0.5 uppercase">
-                CORE
-              </span>
-            </div>
-          }
-          centerLogoAlt="Anunay Neural Core Engine"
+          centerLogo="/anunay-os-logo-v2.png"
+          centerLogoAlt="ANUNAY OS Engine Core"
           onCenterLogoClick={() => {
             setIsCoreOpen((prev) => !prev);
             setSelectedNodeId(null);

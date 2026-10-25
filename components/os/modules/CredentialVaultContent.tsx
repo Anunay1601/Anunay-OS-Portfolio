@@ -9,11 +9,7 @@ type CertCategory = "All" | Certification["category"];
 
 const CATEGORIES: CertCategory[] = [
   "All",
-  "AI & ML",
-  "Cloud & Infra",
-  "Programming",
-  "Virtual Internship",
-  "Engineering",
+  ...Array.from(new Set(certificationsData.map((c) => c.category))),
 ];
 
 export function CredentialVaultContent() {

@@ -36,11 +36,11 @@ export function Header() {
           title="Click to open ANUNAY OS Logo & System Overview"
           aria-label="Open ANUNAY OS Logo and System Information"
         >
-          <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 group-hover:scale-110 group-hover:shadow-[0_0_18px_rgba(56,189,248,0.5)] transition-all duration-300 relative border border-white/10">
+          <div className="w-9 h-9 rounded-xl overflow-hidden shrink-0 group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(56,189,248,0.45)] transition-all duration-300 relative border border-white/20 bg-[#070913] shadow-md">
             <img
-              src="/anunay-os-logo.png"
+              src="/anunay-os-logo-v2.png"
               alt="ANUNAY OS Logo"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
           <div className="flex flex-col">

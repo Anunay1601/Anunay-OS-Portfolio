@@ -89,9 +89,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/anunay-os-logo.png", type: "image/png" },
+      { url: "/anunay-os-logo-v2.png", type: "image/png" },
     ],
-    apple: [{ url: "/anunay-os-logo.png", sizes: "180x180" }],
+    apple: [{ url: "/anunay-os-logo-v2.png", sizes: "180x180" }],
   },
   manifest: "/manifest.webmanifest",
 };
@@ -108,8 +108,8 @@ export default function RootLayout({
       className={`dark ${plusJakartaSans.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
       <head>
-        <link rel="icon" href="/anunay-os-logo.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/anunay-os-logo.png" />
+        <link rel="icon" href="/anunay-os-logo-v2.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/anunay-os-logo-v2.png" />
       </head>
       <body className="bg-background text-foreground min-h-screen overflow-x-hidden antialiased font-sans">
         <ThemeProvider

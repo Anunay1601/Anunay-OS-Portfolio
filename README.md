@@ -50,7 +50,7 @@ All personal data, projects, experience, skills, and certifications are stored s
 - `data/skills.ts`: Categorized technical skill matrix
 - `data/experience.ts`: Datatrack, Quantumard Technologies, ServiceNow Virtual Internship
 - `data/education.ts`: VIT Bhopal University (B.Tech CSE AI&ML, 8.51 CGPA), Takshshila Academy
-- `data/certifications.ts`: ServiceNow, NPTEL, Vityarthi, Michigan, MATLAB credentials
+- `data/certifications.ts`: ServiceNow, NPTEL, Michigan, MATLAB credentials
 - `data/timeline.ts`: Unified system log timeline entries
 
 ---

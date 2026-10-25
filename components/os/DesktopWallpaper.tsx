@@ -208,24 +208,24 @@ export function DesktopWallpaper({
           <div className="my-auto py-2 flex flex-col items-center text-center space-y-3 max-w-3xl w-full">
             {/* Glowing Multi-Layer Emblem Core */}
             <div
-              className="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group cursor-pointer"
+              className="relative w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center group cursor-pointer"
               onClick={onOpenCommandPalette}
               title="Open Command Search (⌘K)"
             >
               {/* Outer Radar Orbit */}
-              <div className="absolute inset-0 rounded-full border border-dashed border-accent-blue/30 animate-spin [animation-duration:18s]" />
-              <div className="absolute -inset-2 rounded-full border border-black/8 dark:border-white/10 animate-spin [animation-duration:30s] [animation-direction:reverse]" />
+              <div className="absolute -inset-2.5 rounded-full border border-dashed border-accent-blue/35 animate-spin [animation-duration:18s]" />
+              <div className="absolute -inset-4 rounded-full border border-black/10 dark:border-white/10 animate-spin [animation-duration:30s] [animation-direction:reverse]" />
 
               {/* Luminous Glow Backdrop */}
-              <div className="absolute inset-1 rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet blur-xl opacity-35 group-hover:opacity-60 transition-opacity duration-300" />
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-300" />
 
-              {/* Central Glass Card Icon */}
-              <div className="relative w-full h-full rounded-3xl bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet p-0.5 shadow-2xl transition-transform duration-300 group-hover:scale-104">
-                <div className="w-full h-full rounded-[22px] bg-white/40 dark:bg-[#0E111B]/60 backdrop-blur-2xl flex items-center justify-center overflow-hidden shadow-inner relative">
+              {/* Central Circular Glass Emblem */}
+              <div className="relative w-full h-full rounded-full bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet p-[2px] shadow-[0_0_30px_rgba(10,132,255,0.35)] transition-transform duration-300 group-hover:scale-105">
+                <div className="w-full h-full rounded-full bg-[#070913] backdrop-blur-2xl flex items-center justify-center overflow-hidden shadow-inner relative">
                   <img
-                    src="/anunay-cutout.png"
-                    alt="Anunay Chhapre"
-                    className="w-full h-full object-cover object-top select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                    src="/anunay-os-logo-v2.png"
+                    alt="ANUNAY OS Logo"
+                    className="w-full h-full object-cover scale-100 select-none pointer-events-none transition-transform duration-300 group-hover:scale-105 drop-shadow-[0_4px_16px_rgba(56,189,248,0.5)]"
                   />
                 </div>
               </div>

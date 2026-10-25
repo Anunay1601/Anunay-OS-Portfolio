@@ -471,7 +471,7 @@ export const SolarSystem = React.forwardRef<HTMLDivElement, SolarSystemProps>(
               {centerLogo ? (
                 typeof centerLogo === "string" ? (
                   <img
-                    className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-2 border-teal-500/40 group-hover:border-teal-400 shadow-[0_0_30px_rgba(20,184,166,0.35)] bg-zinc-950 p-2 md:p-3 relative transition-all duration-300"
+                    className="w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 rounded-full border-2 border-cyan-500/50 group-hover:border-cyan-400 shadow-[0_0_30px_rgba(56,189,248,0.4)] bg-zinc-950 object-cover relative transition-all duration-300"
                     src={centerLogo}
                     alt={centerLogoAlt}
                     width={80}

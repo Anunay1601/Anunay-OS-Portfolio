@@ -17,9 +17,9 @@ export const experienceData: ExperienceItem[] = [
     role: "Software Engineer Intern",
     company: "Datatrack",
     location: "Remote",
-    period: "Mar 2026 – Jun 2026",
+    period: "Mar 2026 – May 2026",
     startDate: "2026-03",
-    endDate: "2026-06",
+    endDate: "2026-05",
     type: "Internship",
     bullets: [
       "Worked on real-world software projects across Fintech and Healthtech domains, contributing across the full SDLC — design, development, testing, deployment, and documentation.",

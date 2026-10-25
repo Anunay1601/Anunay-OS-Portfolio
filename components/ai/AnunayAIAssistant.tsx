@@ -367,33 +367,70 @@ export function AnunayAIAssistant() {
       {/* Floating Assistant Launcher Button */}
       <motion.button
         onClick={() => setIsOpen((prev) => !prev)}
-        whileHover={{ scale: 1.05, y: -6 }}
-        whileTap={{ scale: 0.95, y: 0 }}
+        whileHover={{ scale: 1.04, y: -3 }}
+        whileTap={{ scale: 0.96 }}
         aria-expanded={isOpen}
         aria-controls="anunay-ai-dialog"
-        className="apple-liquid-float-btn relative overflow-hidden flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 cursor-pointer group"
+        className="relative group cursor-pointer rounded-full select-none outline-none focus-visible:ring-2 focus-visible:ring-accent-blue/50 shadow-[0_8px_25px_rgba(0,0,0,0.3)] dark:shadow-[0_12px_35px_rgba(0,0,0,0.6)]"
         aria-label="Toggle ANUNAY AI Assistant"
       >
-        {/* Top Specular Glare Reflection Line */}
-        <div className="absolute inset-x-4 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/40 to-transparent pointer-events-none" />
+        {/* Subtle Ambient Hover Glow */}
+        <div className="absolute -inset-1 rounded-full bg-accent-blue/20 dark:bg-accent-blue/15 blur-lg opacity-30 group-hover:opacity-75 transition-opacity duration-300 pointer-events-none -z-10" />
 
-        {/* Ambient Hover Glow Aura */}
-        <div className="absolute -inset-1 rounded-full bg-accent-blue/15 dark:bg-accent-blue/20 blur-md pointer-events-none opacity-60 group-hover:opacity-100 group-hover:bg-accent-blue/30 transition-all duration-300 -z-10" />
+        {/* Inner Capsule Body */}
+        <div className="relative z-10 rounded-full px-4 sm:px-4.5 py-2 sm:py-2.5 bg-[#090E1F]/90 dark:bg-[#070B16]/90 backdrop-blur-2xl flex items-center gap-2.5 overflow-hidden border border-white/15 dark:border-white/10 group-hover:border-accent-blue/40 transition-all duration-200">
+          {/* Top Specular Glare Reflection Line */}
+          <div className="absolute inset-x-3 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 dark:via-white/25 to-transparent pointer-events-none" />
 
-        {/* Liquid Glass Icon Orb */}
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-tr from-accent-blue via-indigo-500 to-accent-violet flex items-center justify-center text-white shadow-md shadow-accent-blue/30 shrink-0 overflow-hidden border border-white/40"
-        >
-          {/* Specular inner lens sheen */}
-          <span className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-black/10 pointer-events-none" />
-          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 relative z-10" />
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 ring-1.5 ring-white/60 dark:ring-black/60 shadow-[0_0_6px_#34d399] z-20" />
-        </motion.div>
-        <span className="font-sans text-[11px] sm:text-xs font-bold tracking-tight pr-0.5 text-foreground">
-          ANUNAY AI
-        </span>
+          {/* Glowing AI Core Orb */}
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gradient-to-tr from-cyan-400 via-indigo-500 to-fuchsia-500 flex items-center justify-center text-white shadow-[0_0_12px_rgba(6,182,212,0.5)] shrink-0 overflow-hidden border border-white/50"
+          >
+            {/* Specular inner lens sheen */}
+            <span className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-black/20 pointer-events-none" />
+
+            {isOpen ? (
+              <X className="w-3.5 h-3.5 text-white relative z-10" />
+            ) : (
+              <Sparkles className="w-3.5 h-3.5 text-white relative z-10 drop-shadow-[0_0_6px_rgba(255,255,255,0.9)]" />
+            )}
+
+            {/* Live Status Radar Pulse */}
+            {!isOpen && (
+              <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2 z-20">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-80" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400 ring-1 ring-white dark:ring-black" />
+              </span>
+            )}
+          </motion.div>
+
+          {/* Typography */}
+          <span className="font-sans text-xs sm:text-[12.5px] font-extrabold tracking-wider bg-gradient-to-r from-cyan-300 via-white to-fuchsia-300 bg-clip-text text-transparent drop-shadow-[0_0_8px_rgba(34,211,238,0.3)] transition-all">
+            {isOpen ? "CLOSE" : "ANUNAY AI"}
+          </span>
+
+          {/* Neural Equalizer Waves (Idle animation) */}
+          {!isOpen && (
+            <div className="flex items-center gap-[2.5px] h-3 px-0.5" aria-hidden="true">
+              <span className="w-[2px] h-2 rounded-full bg-cyan-400/80 animate-pulse [animation-duration:600ms]" />
+              <span className="w-[2px] h-3.5 rounded-full bg-indigo-400/90 animate-pulse [animation-duration:900ms]" />
+              <span className="w-[2px] h-1.5 rounded-full bg-fuchsia-400/80 animate-pulse [animation-duration:750ms]" />
+            </div>
+          )}
+
+          {/* Futuristic Micro-Badge */}
+          <span
+            className={`hidden sm:inline-flex items-center gap-1 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-full transition-colors ${
+              isOpen
+                ? "bg-rose-500/15 text-rose-500 dark:text-rose-300 border border-rose-500/30"
+                : "bg-cyan-500/10 text-cyan-600 dark:text-cyan-300 border border-cyan-400/30 shadow-[0_0_8px_rgba(6,182,212,0.15)]"
+            }`}
+          >
+            {isOpen ? "ESC" : "✦ ASK"}
+          </span>
+        </div>
       </motion.button>
     </div>
   );

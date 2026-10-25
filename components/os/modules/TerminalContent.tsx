@@ -40,7 +40,7 @@ export function TerminalContent() {
               <div><span className="text-accent-blue font-semibold">Location:</span> {profileData.location}</div>
               <div><span className="text-accent-blue font-semibold">Shell:</span> zsh 5.9 (x86_64-apple-darwin)</div>
               <div><span className="text-accent-blue font-semibold">Core Stack:</span> Java, Python, TypeScript, React, Next.js, n8n</div>
-              <div><span className="text-accent-blue font-semibold">Deployments:</span> 4 Verified Systems • 9 Certifications</div>
+              <div><span className="text-accent-blue font-semibold">Deployments:</span> 4 Verified Systems • {certificationsData.length} Certifications</div>
             </div>
           </div>
           <div className="text-muted-foreground pt-1 border-t border-white/10">

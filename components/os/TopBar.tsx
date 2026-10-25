@@ -70,11 +70,11 @@ export function TopBar({ onOpenCommandPalette, onOpenWindow }: TopBarProps) {
           title="Click to view ANUNAY OS Logo & System Overview"
           aria-label="Open ANUNAY OS Logo and System Information"
         >
-          <div className="w-5 h-5 shrink-0 rounded-md overflow-hidden relative shadow-xs group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.5)] transition-all duration-200">
+          <div className="w-6 h-6 shrink-0 rounded-lg overflow-hidden relative shadow-xs border border-white/15 bg-[#070913] group-hover:scale-110 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.5)] transition-all duration-200">
             <img
-              src="/anunay-os-logo.png"
+              src="/anunay-os-logo-v2.png"
               alt="ANUNAY OS Logo"
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
           </div>
           <span className="font-semibold text-xs tracking-tight text-foreground/90 group-hover:text-cyan-400 transition-colors">ANUNAY OS</span>

@@ -20,21 +20,12 @@ export const timelineData: TimelineEntry[] = [
   },
   {
     id: "log-002",
-    timestamp: "2026-03 – 2026-06",
+    timestamp: "2026-03 – 2026-05",
     title: "Software Engineer Intern at Datatrack",
     subtitle: "Datatrack (Remote)",
     category: "DEPLOYMENT",
     description: "Worked on Fintech and Healthtech software systems across full SDLC.",
     tags: ["Fintech", "Healthtech", "SDLC", "Full-Stack"],
-  },
-  {
-    id: "log-003",
-    timestamp: "2026-03",
-    title: "Java & Linux Certifications Earned",
-    subtitle: "Vityarthi",
-    category: "CERTIFICATION",
-    description: "Earned Programming in Java and Open Source Software (Linux) certifications.",
-    tags: ["Java", "Linux", "Open Source"],
   },
   {
     id: "log-004",

@@ -54,8 +54,8 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
   const renderDockItem = (item: DockItem) => {
     const Icon = item.icon;
     const win = windows[item.id];
-    const isOpen = win?.isOpen;
-    const isActive = activeWindowId === item.id && isOpen && !win?.isMinimized;
+    const isOpen = Boolean(win?.isOpen && !win?.isMinimized);
+    const isActive = activeWindowId === item.id && isOpen;
     const isHovered = hoveredId === item.id;
 
     return (

@@ -8,6 +8,8 @@ import { Button } from "@/components/ui/Button";
 import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 import { RadialGlowButton } from "@/components/ui/radial-glow-button";
 import { profileData } from "@/data/profile";
+import { certificationsData } from "@/data/certifications";
+import { projectsData } from "@/data/projects";
 import { fadeIn, staggerContainer } from "@/lib/animations";
 import {
   Monitor,
@@ -81,12 +83,6 @@ export function HeroSection() {
 
           {/* Action CTAs */}
           <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
-            <style>{`
-              @keyframes border-beam-spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-              }
-            `}</style>
             <RadialGlowButton href="/os">
               <Monitor className="w-4.5 h-4.5" />
               <span>Launch ANUNAY OS</span>
@@ -110,99 +106,49 @@ export function HeroSection() {
               Resume
             </LiquidMetalButton>
 
-            {/* Ultra-Premium Glassmorphic GitHub CTA */}
+            {/* Professional GitHub CTA */}
             <a
               href={profileData.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Profile"
-              className="relative group inline-flex items-center justify-center h-12 p-[1.5px] rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(0,0,0,0.08),0_0_12px_rgba(255,255,255,0.06)] dark:shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_18px_rgba(255,255,255,0.12)] hover:shadow-[0_12px_32px_rgba(0,0,0,0.2),0_0_28px_rgba(255,255,255,0.25)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.8),0_0_32px_rgba(255,255,255,0.28)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+              className="group inline-flex items-center justify-center h-12 px-4 rounded-xl border border-border/80 dark:border-white/10 bg-surface/80 dark:bg-[#0B0F1A]/90 backdrop-blur-xl hover:bg-surface dark:hover:bg-[#121826] hover:border-foreground/20 dark:hover:border-white/25 shadow-xs hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer gap-2.5 font-sans font-semibold text-sm text-foreground/90 hover:text-foreground"
             >
-              {/* Static subtle border track */}
-              <div className="absolute inset-0 rounded-xl bg-black/10 dark:bg-white/10" />
-
-              {/* Orbiting Laser Border Beam */}
-              <div
-                className="absolute inset-[-150%] pointer-events-none opacity-80 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, transparent 0deg, transparent 270deg, rgba(148,163,184,0.3) 300deg, rgba(255,255,255,0.9) 345deg, #ffffff 360deg)",
-                  animation: "border-beam-spin 3.5s linear infinite",
-                }}
-              />
-
-              {/* Inner Button Body */}
-              <div className="relative z-10 w-full h-full px-4 rounded-[10.5px] bg-white/90 dark:bg-[#0B0F1A]/95 backdrop-blur-2xl flex items-center gap-2.5 font-sans font-semibold text-sm text-foreground/90 group-hover:text-foreground transition-colors overflow-hidden">
-                {/* Top specular reflection glare line */}
-                <div className="absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/80 dark:via-white/40 to-transparent pointer-events-none" />
-
-                {/* Shimmer sweep effect on hover */}
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform pointer-events-none" />
-
-                {/* Micro badge icon */}
-                <div className="w-7 h-7 rounded-lg bg-black/5 dark:bg-white/10 flex items-center justify-center shrink-0 border border-black/10 dark:border-white/15 group-hover:scale-110 group-hover:bg-black/10 dark:group-hover:bg-white/20 group-hover:shadow-[0_0_12px_rgba(255,255,255,0.3)] transition-all duration-300">
-                  <Github className="w-4 h-4 text-foreground transition-transform" />
-                </div>
-
-                <span className="tracking-tight">GitHub</span>
-
-                <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+              <div className="w-7 h-7 rounded-lg bg-foreground/5 dark:bg-white/10 flex items-center justify-center shrink-0 border border-border/50 dark:border-white/10 group-hover:scale-105 group-hover:bg-foreground/10 dark:group-hover:bg-white/15 transition-all duration-200">
+                <Github className="w-4 h-4 text-foreground transition-transform" />
               </div>
+              <span className="tracking-tight">GitHub</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
             </a>
 
-            {/* Ultra-Premium Glassmorphic LinkedIn CTA */}
+            {/* Professional LinkedIn CTA */}
             <a
               href={profileData.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn Profile"
-              className="relative group inline-flex items-center justify-center h-12 p-[1.5px] rounded-xl overflow-hidden shadow-[0_4px_16px_rgba(10,102,194,0.15),0_0_12px_rgba(56,189,248,0.12)] dark:shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_20px_rgba(14,165,233,0.25)] hover:shadow-[0_12px_32px_rgba(10,102,194,0.3),0_0_30px_rgba(56,189,248,0.35)] dark:hover:shadow-[0_16px_36px_rgba(0,0,0,0.8),0_0_36px_rgba(14,165,233,0.45)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 cursor-pointer"
+              className="group inline-flex items-center justify-center h-12 px-4 rounded-xl border border-border/80 dark:border-white/10 bg-surface/80 dark:bg-[#0B0F1A]/90 backdrop-blur-xl hover:bg-[#0A66C2]/[0.05] dark:hover:bg-[#0A66C2]/15 hover:border-[#0A66C2]/40 dark:hover:border-[#0A66C2]/50 shadow-xs hover:shadow-md hover:shadow-[#0A66C2]/10 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer gap-2.5 font-sans font-semibold text-sm text-foreground/90 hover:text-foreground"
             >
-              {/* Static subtle border track */}
-              <div className="absolute inset-0 rounded-xl bg-[#0A66C2]/15 dark:bg-[#0A66C2]/25" />
-
-              {/* Orbiting Laser Border Beam */}
-              <div
-                className="absolute inset-[-150%] pointer-events-none opacity-85 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background:
-                    "conic-gradient(from 0deg, transparent 0deg, transparent 260deg, #0A66C2 300deg, #38BDF8 340deg, #ffffff 360deg)",
-                  animation: "border-beam-spin 3.5s linear infinite",
-                }}
-              />
-
-              {/* Inner Button Body */}
-              <div className="relative z-10 w-full h-full px-4 rounded-[10.5px] bg-white/90 dark:bg-[#0B0F1A]/95 backdrop-blur-2xl flex items-center gap-2.5 font-sans font-semibold text-sm text-foreground/90 group-hover:text-foreground transition-colors overflow-hidden">
-                {/* Top specular reflection glare line */}
-                <div className="absolute inset-x-2 top-0 h-[1px] bg-gradient-to-r from-transparent via-[#38BDF8]/60 to-transparent pointer-events-none" />
-
-                {/* Shimmer sweep effect on hover */}
-                <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full duration-1000 bg-gradient-to-r from-transparent via-[#38BDF8]/20 to-transparent transition-transform pointer-events-none" />
-
-                {/* Micro badge icon */}
-                <div className="w-7 h-7 rounded-lg bg-[#0A66C2]/10 dark:bg-[#0A66C2]/20 flex items-center justify-center shrink-0 border border-[#0A66C2]/25 dark:border-[#38BDF8]/35 group-hover:scale-110 group-hover:bg-[#0A66C2]/25 dark:group-hover:bg-[#0A66C2]/35 group-hover:shadow-[0_0_12px_rgba(56,189,248,0.4)] transition-all duration-300">
-                  <Linkedin className="w-4 h-4 text-[#0A66C2] dark:text-[#38BDF8] transition-transform" />
-                </div>
-
-                <span className="tracking-tight">LinkedIn</span>
-
-                <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-[#0A66C2] dark:group-hover:text-[#38BDF8] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+              <div className="w-7 h-7 rounded-lg bg-[#0A66C2]/10 dark:bg-[#0A66C2]/20 flex items-center justify-center shrink-0 border border-[#0A66C2]/20 dark:border-[#38BDF8]/30 group-hover:scale-105 group-hover:bg-[#0A66C2]/20 dark:group-hover:bg-[#0A66C2]/30 transition-all duration-200">
+                <Linkedin className="w-4 h-4 text-[#0A66C2] dark:text-[#38BDF8] transition-transform" />
               </div>
+              <span className="tracking-tight">LinkedIn</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-[#0A66C2] dark:group-hover:text-[#38BDF8] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
             </a>
           </div>
 
           {/* Stats Bar */}
           <div className="pt-3 grid grid-cols-3 gap-2 border-t border-border-color">
             <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-accent-blue">8.51</div>
+              <div className="text-base font-bold font-mono text-accent-blue">{profileData.cgpa.split(" ")[0]}</div>
               <div className="text-[10px] font-mono text-muted-foreground">CGPA @ VIT Bhopal</div>
             </div>
             <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">4 Systems</div>
+              <div className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">{projectsData.length} Systems</div>
               <div className="text-[10px] font-mono text-muted-foreground">Production Apps</div>
             </div>
             <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-purple-500 dark:text-purple-400">9 Credentials</div>
+              <div className="text-base font-bold font-mono text-purple-500 dark:text-purple-400">{certificationsData.length} Credentials</div>
               <div className="text-[10px] font-mono text-muted-foreground">Verified Certs</div>
             </div>
           </div>

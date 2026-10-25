@@ -142,16 +142,30 @@ export function computeCenteredBounds(
   };
 }
 
+function getTopOpenWindowId(
+  windows: Record<WindowId, WindowState>,
+  excludeId?: WindowId
+): WindowId | null {
+  let topWin: WindowState | null = null;
+  for (const w of Object.values(windows)) {
+    if (w.id === excludeId) continue;
+    if (w.isOpen && !w.isMinimized) {
+      if (!topWin || w.zIndex > topWin.zIndex) {
+        topWin = w;
+      }
+    }
+  }
+  return topWin ? topWin.id : null;
+}
+
 export function useOSStore() {
   const [windows, setWindows] = useState<Record<WindowId, WindowState>>(() => {
     const initial: Record<string, WindowState> = {};
-    let openCount = 0;
 
     (Object.keys(DEFAULT_SPECS) as WindowId[]).forEach((id) => {
       const spec = DEFAULT_SPECS[id];
       const isOpen = id === "neural-core";
-      const bounds = computeCenteredBounds(spec.idealWidth, spec.idealHeight, isOpen ? 0 : openCount);
-      if (isOpen) openCount++;
+      const bounds = computeCenteredBounds(spec.idealWidth, spec.idealHeight, 0);
 
       initial[id] = {
         id,
@@ -179,16 +193,14 @@ export function useOSStore() {
     const handleResize = () => {
       setWindows((prev) => {
         const updated = { ...prev };
-        let openIndex = 0;
 
         (Object.keys(updated) as WindowId[]).forEach((id) => {
           const win = updated[id];
           const bounds = computeCenteredBounds(
             win.idealSize.width,
             win.idealSize.height,
-            win.isOpen ? openIndex : 0
+            0
           );
-          if (win.isOpen) openIndex++;
 
           updated[id] = {
             ...win,
@@ -206,61 +218,95 @@ export function useOSStore() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const focusWindow = useCallback(
-    (id: WindowId) => {
-      setActiveZIndex((prev) => {
-        const nextZ = prev + 1;
-        setWindows((prevWin) => {
-          const current = prevWin[id];
-          const bounds = computeCenteredBounds(
-            current.idealSize.width,
-            current.idealSize.height,
-            nextZ % 5
-          );
+  const focusWindow = useCallback((id: WindowId) => {
+    setWindows((prevWin) => {
+      const current = prevWin[id];
+      if (!current) return prevWin;
 
-          return {
-            ...prevWin,
-            [id]: {
-              ...current,
-              isOpen: true,
-              isMinimized: false,
-              zIndex: nextZ,
-              position: current.position.y >= 44 ? current.position : bounds.position,
-            },
-          };
-        });
-        return nextZ;
-      });
+      const maxZ = Math.max(10, ...Object.values(prevWin).map((w) => w.zIndex));
+      const nextZ = maxZ + 1;
+      const bounds = computeCenteredBounds(
+        current.idealSize.width,
+        current.idealSize.height,
+        0
+      );
+
+      setActiveZIndex(nextZ);
       setActiveWindowId(id);
-    },
-    []
-  );
 
-  const openWindow = useCallback(
-    (id: WindowId) => {
-      focusWindow(id);
-    },
-    [focusWindow]
-  );
+      return {
+        ...prevWin,
+        [id]: {
+          ...current,
+          isOpen: true,
+          isMinimized: false,
+          zIndex: nextZ,
+          position: current.isOpen && current.position.y >= 36 ? current.position : bounds.position,
+          size: bounds.size,
+        },
+      };
+    });
+  }, []);
+
+  const openWindow = useCallback((id: WindowId) => {
+    setWindows((prevWin) => {
+      const current = prevWin[id];
+      if (!current) return prevWin;
+
+      const maxZ = Math.max(10, ...Object.values(prevWin).map((w) => w.zIndex));
+      const nextZ = maxZ + 1;
+      const bounds = computeCenteredBounds(
+        current.idealSize.width,
+        current.idealSize.height,
+        0
+      );
+
+      setActiveZIndex(nextZ);
+      setActiveWindowId(id);
+
+      return {
+        ...prevWin,
+        [id]: {
+          ...current,
+          isOpen: true,
+          isMinimized: false,
+          zIndex: nextZ,
+          position: bounds.position,
+          size: bounds.size,
+        },
+      };
+    });
+  }, []);
 
   const closeWindow = useCallback((id: WindowId) => {
-    setWindows((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        isOpen: false,
-      },
-    }));
+    setWindows((prev) => {
+      const nextWindows = {
+        ...prev,
+        [id]: {
+          ...prev[id],
+          isOpen: false,
+          isMinimized: false,
+        },
+      };
+      const nextActive = getTopOpenWindowId(nextWindows, id);
+      setActiveWindowId(nextActive);
+      return nextWindows;
+    });
   }, []);
 
   const minimizeWindow = useCallback((id: WindowId) => {
-    setWindows((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        isMinimized: true,
-      },
-    }));
+    setWindows((prev) => {
+      const nextWindows = {
+        ...prev,
+        [id]: {
+          ...prev[id],
+          isMinimized: true,
+        },
+      };
+      const nextActive = getTopOpenWindowId(nextWindows, id);
+      setActiveWindowId(nextActive);
+      return nextWindows;
+    });
   }, []);
 
   const toggleMaximizeWindow = useCallback((id: WindowId) => {
@@ -273,31 +319,51 @@ export function useOSStore() {
     }));
   }, []);
 
-  const toggleWindow = useCallback(
-    (id: WindowId) => {
-      setWindows((prev) => {
-        const win = prev[id];
-        if (!win.isOpen) {
-          return {
-            ...prev,
-            [id]: { ...win, isOpen: true, isMinimized: false, zIndex: activeZIndex + 1 },
-          };
-        } else if (win.isMinimized) {
-          return {
-            ...prev,
-            [id]: { ...win, isMinimized: false, zIndex: activeZIndex + 1 },
-          };
-        } else {
-          return {
-            ...prev,
-            [id]: { ...win, isMinimized: true },
-          };
-        }
-      });
+  const toggleWindow = useCallback((id: WindowId) => {
+    setWindows((prevWin) => {
+      const current = prevWin[id];
+      if (!current) return prevWin;
+
+      // 1. If currently opened and visible: CLOSE IT!
+      if (current.isOpen && !current.isMinimized) {
+        const nextWindows = {
+          ...prevWin,
+          [id]: {
+            ...current,
+            isOpen: false,
+            isMinimized: false,
+          },
+        };
+        const nextActive = getTopOpenWindowId(nextWindows, id);
+        setActiveWindowId(nextActive);
+        return nextWindows;
+      }
+
+      // 2. Otherwise (closed or minimized): OPEN IT AT THE TOP!
+      const maxZ = Math.max(10, ...Object.values(prevWin).map((w) => w.zIndex));
+      const nextZ = maxZ + 1;
+      const bounds = computeCenteredBounds(
+        current.idealSize.width,
+        current.idealSize.height,
+        0
+      );
+
+      setActiveZIndex(nextZ);
       setActiveWindowId(id);
-    },
-    [activeZIndex]
-  );
+
+      return {
+        ...prevWin,
+        [id]: {
+          ...current,
+          isOpen: true,
+          isMinimized: false,
+          zIndex: nextZ,
+          position: bounds.position,
+          size: bounds.size,
+        },
+      };
+    });
+  }, []);
 
   return {
     windows,
