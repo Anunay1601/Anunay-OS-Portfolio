@@ -39,12 +39,12 @@ export default function ResumePage() {
         subtitle="Verified Official Document"
         icon={<FileText className="w-4 h-4 text-accent-blue" />}
       >
-        <div className="bg-surface p-6 sm:p-10 rounded-apple-lg border border-border space-y-8 font-sans">
+        <div className="bg-surface p-4 sm:p-8 md:p-10 rounded-apple-lg border border-border space-y-6 sm:space-y-8 font-sans">
           {/* Header */}
-          <div className="border-b border-border pb-6 space-y-3 text-center sm:text-left">
-            <h1 className="text-3xl font-extrabold text-foreground">{profileData.name}</h1>
-            <p className="text-sm text-accent-blue font-medium">{profileData.role}</p>
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs font-mono text-muted-foreground pt-1">
+          <div className="border-b border-border pb-5 sm:pb-6 space-y-2.5 sm:space-y-3 text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">{profileData.name}</h1>
+            <p className="text-xs sm:text-sm text-accent-blue font-medium">{profileData.role}</p>
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 sm:gap-4 text-xs font-mono text-muted-foreground pt-1">
               <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5" /> {profileData.phone}</span>
               <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5" /> {profileData.email}</span>
               <a href={profileData.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-foreground">
@@ -140,9 +140,12 @@ export default function ResumePage() {
             <h2 className="text-xs font-mono font-bold uppercase tracking-wider text-accent-blue">Certifications</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-muted-foreground">
               {certificationsData.map((c) => (
-                <div key={c.id} className="flex items-center justify-between p-2 rounded bg-surface-hover/50 border border-border">
-                  <span className="font-medium text-foreground">{c.title}</span>
-                  <span className="font-mono text-[10px] text-accent-violet">{c.date}</span>
+                <div key={c.id} className="flex items-start justify-between gap-2 p-2.5 rounded bg-surface-hover/50 border border-border">
+                  <div className="min-w-0">
+                    <div className="font-medium text-foreground">{c.title}</div>
+                    <div className="text-[11px] text-muted-foreground">{c.issuer}</div>
+                  </div>
+                  <span className="font-mono text-[10px] text-accent-violet shrink-0 pt-0.5">{c.date}</span>
                 </div>
               ))}
             </div>

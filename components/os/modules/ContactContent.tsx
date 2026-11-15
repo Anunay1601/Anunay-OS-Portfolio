@@ -33,9 +33,9 @@ export function ContactContent() {
             </h4>
             <div className="space-y-2.5 text-xs">
               <div className="flex items-center justify-between text-foreground">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0 pr-2">
                   <Mail className="w-4 h-4 text-accent-blue shrink-0" />
-                  <a href={`mailto:${profileData.email}`} className="hover:underline font-mono">
+                  <a href={`mailto:${profileData.email}`} className="hover:underline font-mono truncate">
                     {profileData.email}
                   </a>
                 </div>

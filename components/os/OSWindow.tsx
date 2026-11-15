@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WindowState, WindowId } from "@/hooks/useOSStore";
 import {
@@ -18,60 +18,19 @@ import {
   Network,
   Mail,
 } from "lucide-react";
-import dynamic from "next/dynamic";
 import { cn } from "@/lib/utils";
 
-// Reusable module loader skeleton
-const ModuleLoader = ({ title }: { title?: string }) => (
-  <div className="w-full h-full min-h-[240px] flex flex-col items-center justify-center space-y-3 p-8">
-    <div className="w-10 h-10 rounded-xl bg-accent-blue/10 border border-accent-blue/20 flex items-center justify-center animate-pulse">
-      <Cpu className="w-5 h-5 text-accent-blue animate-spin" />
-    </div>
-    <span className="text-xs font-mono text-muted-foreground">Loading {title || "Module"}...</span>
-  </div>
-);
-
-// Dynamic Content Module Imports (Code-Splitting for Production Performance)
-const NeuralCore = dynamic(
-  () => import("@/components/hero/NeuralCore").then((m) => m.NeuralCore),
-  { ssr: false, loading: () => <ModuleLoader title="Neural Core" /> }
-);
-const ProjectLabContent = dynamic(
-  () => import("@/components/os/modules/ProjectLabContent").then((m) => m.ProjectLabContent),
-  { ssr: false, loading: () => <ModuleLoader title="Project Lab" /> }
-);
-const DevEnvContent = dynamic(
-  () => import("@/components/os/modules/DevEnvContent").then((m) => m.DevEnvContent),
-  { ssr: false, loading: () => <ModuleLoader title="Dev Environment" /> }
-);
-const AutomationCoreContent = dynamic(
-  () => import("@/components/os/modules/AutomationCoreContent").then((m) => m.AutomationCoreContent),
-  { ssr: false, loading: () => <ModuleLoader title="Automation Core" /> }
-);
-const SystemLogsContent = dynamic(
-  () => import("@/components/os/modules/SystemLogsContent").then((m) => m.SystemLogsContent),
-  { ssr: false, loading: () => <ModuleLoader title="System Logs" /> }
-);
-const CredentialVaultContent = dynamic(
-  () => import("@/components/os/modules/CredentialVaultContent").then((m) => m.CredentialVaultContent),
-  { ssr: false, loading: () => <ModuleLoader title="Credential Vault" /> }
-);
-const TerminalContent = dynamic(
-  () => import("@/components/os/modules/TerminalContent").then((m) => m.TerminalContent),
-  { ssr: false, loading: () => <ModuleLoader title="Terminal Shell" /> }
-);
-const ResumeContent = dynamic(
-  () => import("@/components/os/modules/ResumeContent").then((m) => m.ResumeContent),
-  { ssr: false, loading: () => <ModuleLoader title="Official Resume" /> }
-);
-const NetworkContent = dynamic(
-  () => import("@/components/os/modules/NetworkContent").then((m) => m.NetworkContent),
-  { ssr: false, loading: () => <ModuleLoader title="Skill Network" /> }
-);
-const ContactContent = dynamic(
-  () => import("@/components/os/modules/ContactContent").then((m) => m.ContactContent),
-  { ssr: false, loading: () => <ModuleLoader title="Contact Dispatcher" /> }
-);
+// Static Content Module Imports (Zero-Latency Instant Mounting)
+import { NeuralCore } from "@/components/hero/NeuralCore";
+import { ProjectLabContent } from "@/components/os/modules/ProjectLabContent";
+import { DevEnvContent } from "@/components/os/modules/DevEnvContent";
+import { AutomationCoreContent } from "@/components/os/modules/AutomationCoreContent";
+import { SystemLogsContent } from "@/components/os/modules/SystemLogsContent";
+import { CredentialVaultContent } from "@/components/os/modules/CredentialVaultContent";
+import { TerminalContent } from "@/components/os/modules/TerminalContent";
+import { ResumeContent } from "@/components/os/modules/ResumeContent";
+import { NetworkContent } from "@/components/os/modules/NetworkContent";
+import { ContactContent } from "@/components/os/modules/ContactContent";
 
 const ICON_MAP: Record<string, any> = {
   Cpu,
@@ -95,7 +54,7 @@ interface OSWindowProps {
   isMobile: boolean;
 }
 
-export function OSWindow({
+export const OSWindow = React.memo(function OSWindow({
   windowState,
   onClose,
   onMinimize,
@@ -105,12 +64,7 @@ export function OSWindow({
 }: OSWindowProps) {
   const windowRef = useRef<HTMLDivElement | null>(null);
 
-  if (!windowState.isOpen) return null;
-
-  const IconComponent = ICON_MAP[windowState.iconName] || Cpu;
-
-  // Render module content dynamically
-  const renderModuleContent = () => {
+  const moduleContent = useMemo(() => {
     switch (windowState.id) {
       case "neural-core":
         return <NeuralCore />;
@@ -135,41 +89,55 @@ export function OSWindow({
       default:
         return <div>Module Content</div>;
     }
-  };
+  }, [windowState.id]);
 
-  // Mobile View: Full-screen panel instead of draggable window
+  if (!windowState.isOpen) return null;
+
+  const IconComponent = ICON_MAP[windowState.iconName] || Cpu;
+
+  // Mobile View: Full-screen panel with native iOS sheet spring transition
   if (isMobile) {
     return (
-      <div
+      <motion.div
         role="dialog"
         aria-modal="true"
         aria-label={windowState.title}
-        className="fixed inset-0 z-40 bg-background/95 backdrop-blur-2xl flex flex-col pt-9 pb-16 px-3 animate-in fade-in slide-in-from-bottom-4"
+        initial={{ opacity: 0, y: "100%" }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: "100%" }}
+        transition={{ type: "spring", stiffness: 360, damping: 32, mass: 0.8 }}
+        style={{ zIndex: windowState.zIndex }}
+        className="fixed inset-0 bg-background/95 backdrop-blur-xl flex flex-col pt-12 pb-24 px-3"
       >
         {/* Mobile Header Bar */}
-        <div className="h-10 px-3 bg-surface border-b border-border flex items-center justify-between rounded-t-apple-lg">
-          <div className="flex items-center gap-2">
-            <IconComponent className="w-4 h-4 text-accent-blue" />
-            <span className="text-xs font-bold text-foreground">{windowState.title}</span>
+        <div className="h-10 px-3 bg-surface border-b border-border flex items-center justify-between rounded-t-apple-lg shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <IconComponent className="w-4 h-4 text-accent-blue shrink-0" />
+            <span className="text-xs font-bold text-foreground truncate">{windowState.title}</span>
           </div>
           <button
             type="button"
             onClick={() => onClose(windowState.id)}
-            className="p-1.5 rounded-full text-muted-foreground hover:text-foreground bg-surface-hover transition-colors"
+            className="p-1.5 rounded-full text-muted-foreground hover:text-foreground bg-surface-hover transition-colors shrink-0"
             aria-label="Close panel"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
         {/* Content */}
-        <div className="flex-1 p-3 bg-surface/50 rounded-b-apple-lg border-x border-b border-border overflow-y-auto">
-          {renderModuleContent()}
+        <div className="flex-1 p-3 bg-surface/50 rounded-b-apple-lg border-x border-b border-border overflow-y-auto no-scrollbar">
+          {moduleContent}
         </div>
-      </div>
+      </motion.div>
     );
   }
 
-  // Desktop View: Draggable glass window with authentic macOS Genie spring physics emerging from dock button
+  const targetX = windowState.isMaximized ? 0 : Math.round(windowState.position.x);
+  const targetY = windowState.isMaximized ? 0 : Math.round(windowState.position.y);
+  const targetW = windowState.isMaximized ? "100%" : Math.round(windowState.size.width);
+  const targetH = windowState.isMaximized ? "100%" : Math.round(windowState.size.height);
+
+  // Desktop View: Draggable glass window with Apple macOS / visionOS Spring Bloom
   return (
     <motion.div
       ref={windowRef}
@@ -178,40 +146,40 @@ export function OSWindow({
       drag={!windowState.isMaximized}
       dragMomentum={false}
       onMouseDown={() => onFocus(windowState.id)}
-      initial={{ opacity: 0, scale: 0.15, y: 380, transformOrigin: "bottom center" }}
+      initial={{
+        opacity: 0,
+        x: targetX,
+        y: targetY + 10,
+      }}
       animate={{
         opacity: 1,
-        scale: 1,
-        x: windowState.isMaximized ? 0 : Math.round(windowState.position.x),
-        y: windowState.isMaximized ? 0 : Math.round(windowState.position.y),
-        width: windowState.isMaximized ? "100%" : Math.round(windowState.size.width),
-        height: windowState.isMaximized ? "100%" : Math.round(windowState.size.height),
-        top: 0,
-        left: 0,
-        transformOrigin: "bottom center",
+        x: targetX,
+        y: targetY,
       }}
       exit={{
         opacity: 0,
-        scale: 0.08,
-        y: 460,
-        transformOrigin: "bottom center",
+        y: targetY + 10,
         transition: {
-          duration: 0.35,
-          ease: [0.32, 0, 0.67, 0],
+          duration: 0.14,
+          ease: [0.16, 1, 0.3, 1],
         },
       }}
       transition={{
         type: "spring",
-        stiffness: 290,
-        damping: 24,
-        mass: 0.75,
+        stiffness: 400,
+        damping: 30,
+        mass: 0.6,
       }}
       style={{
         zIndex: windowState.zIndex,
         position: "absolute",
+        top: 0,
+        left: 0,
+        width: targetW,
+        height: targetH,
       }}
       className={cn(
-        "rounded-2xl border border-white/30 dark:border-white/20 bg-white/95 dark:bg-[#0C0E17]/95 backdrop-blur-2xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden select-none os-window-content transition-shadow duration-300",
+        "rounded-2xl border border-white/30 dark:border-white/20 bg-white/95 dark:bg-[#0C0E17]/95 backdrop-blur-xl shadow-[0_25px_60px_rgba(0,0,0,0.4)] flex flex-col overflow-hidden select-none os-window-content",
         windowState.isMaximized && "rounded-none border-none shadow-none"
       )}
     >
@@ -293,8 +261,21 @@ export function OSWindow({
 
       {/* Module Content Container */}
       <div className={cn("flex-1 overflow-auto bg-white/80 dark:bg-[#0E111D]/90 backdrop-blur-xl flex flex-col min-h-0 no-scrollbar text-foreground font-sans", windowState.id === "neural-core" ? "p-2 sm:p-3" : "p-4 sm:p-6")}>
-        {renderModuleContent()}
+        {moduleContent}
       </div>
     </motion.div>
   );
-}
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.isMobile === nextProps.isMobile &&
+    prevProps.windowState.id === nextProps.windowState.id &&
+    prevProps.windowState.isOpen === nextProps.windowState.isOpen &&
+    prevProps.windowState.isMinimized === nextProps.windowState.isMinimized &&
+    prevProps.windowState.isMaximized === nextProps.windowState.isMaximized &&
+    prevProps.windowState.zIndex === nextProps.windowState.zIndex &&
+    prevProps.windowState.position.x === nextProps.windowState.position.x &&
+    prevProps.windowState.position.y === nextProps.windowState.position.y &&
+    prevProps.windowState.size.width === nextProps.windowState.size.width &&
+    prevProps.windowState.size.height === nextProps.windowState.size.height
+  );
+});

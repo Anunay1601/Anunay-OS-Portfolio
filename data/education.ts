@@ -17,7 +17,7 @@ export const educationData: EducationItem[] = [
     degree: "B.Tech",
     field: "Computer Science and Engineering (AI & ML)",
     period: "2024 – 2028",
-    grade: "CGPA: 8.51 / 10",
+    grade: "CGPA: 8.49 / 10",
     details: [
       "Specialization in Artificial Intelligence and Machine Learning",
       "Active focus on full-stack web applications, AI automation, and cloud deployments",

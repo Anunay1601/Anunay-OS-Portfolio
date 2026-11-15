@@ -185,40 +185,49 @@ export function useOSStore() {
     return initial as Record<WindowId, WindowState>;
   });
 
-  const [activeZIndex, setActiveZIndex] = useState<number>(10);
   const [activeWindowId, setActiveWindowId] = useState<WindowId | null>("neural-core");
 
-  // Recalculate window placements on client mount & window resize
+  // Recalculate window placements on client mount & window resize (throttled with RAF)
   useEffect(() => {
+    let rafId: number | null = null;
+
     const handleResize = () => {
-      setWindows((prev) => {
-        const updated = { ...prev };
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setWindows((prev) => {
+          const updated = { ...prev };
 
-        (Object.keys(updated) as WindowId[]).forEach((id) => {
-          const win = updated[id];
-          const bounds = computeCenteredBounds(
-            win.idealSize.width,
-            win.idealSize.height,
-            0
-          );
+          (Object.keys(updated) as WindowId[]).forEach((id) => {
+            const win = updated[id];
+            const bounds = computeCenteredBounds(
+              win.idealSize.width,
+              win.idealSize.height,
+              0
+            );
 
-          updated[id] = {
-            ...win,
-            position: win.isMaximized ? { x: 0, y: 0 } : bounds.position,
-            size: bounds.size,
-          };
+            updated[id] = {
+              ...win,
+              position: win.isMaximized ? { x: 0, y: 0 } : bounds.position,
+              size: bounds.size,
+            };
+          });
+
+          return updated;
         });
-
-        return updated;
       });
     };
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const focusWindow = useCallback((id: WindowId) => {
+    setActiveWindowId(id);
     setWindows((prevWin) => {
       const current = prevWin[id];
       if (!current) return prevWin;
@@ -230,9 +239,6 @@ export function useOSStore() {
         current.idealSize.height,
         0
       );
-
-      setActiveZIndex(nextZ);
-      setActiveWindowId(id);
 
       return {
         ...prevWin,
@@ -249,6 +255,7 @@ export function useOSStore() {
   }, []);
 
   const openWindow = useCallback((id: WindowId) => {
+    setActiveWindowId(id);
     setWindows((prevWin) => {
       const current = prevWin[id];
       if (!current) return prevWin;
@@ -260,9 +267,6 @@ export function useOSStore() {
         current.idealSize.height,
         0
       );
-
-      setActiveZIndex(nextZ);
-      setActiveWindowId(id);
 
       return {
         ...prevWin,
@@ -348,7 +352,6 @@ export function useOSStore() {
         0
       );
 
-      setActiveZIndex(nextZ);
       setActiveWindowId(id);
 
       return {

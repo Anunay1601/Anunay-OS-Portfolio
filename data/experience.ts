@@ -22,7 +22,8 @@ export const experienceData: ExperienceItem[] = [
     endDate: "2026-05",
     type: "Internship",
     bullets: [
-      "Worked on real-world software projects across Fintech and Healthtech domains, contributing across the full SDLC — design, development, testing, deployment, and documentation.",
+      "Contributed to application design and feature development for software systems across Fintech and Healthtech domains.",
+      "Executed testing, deployment verification, and technical documentation across the full software development lifecycle (SDLC).",
     ],
     technologies: ["Fintech", "Healthtech", "SDLC", "Software Engineering"],
   },
@@ -36,9 +37,9 @@ export const experienceData: ExperienceItem[] = [
     endDate: "2026-01",
     type: "Internship",
     bullets: [
-      "Built the frontend and core UI for Quantumard Exhibit Manager, a full-stack visitor management system, using React and Vite.",
-      "Collaborated on a Node.js/Express backend integrated with a Python/Flask face-recognition microservice, MongoDB Atlas, Cloudinary, and Telegram Bot API.",
-      "Delivered a client-facing product demo, including role-based permission walkthroughs.",
+      "Built the React and Vite frontend and core user interfaces for Quantumard Exhibit Manager, a full-stack visitor management system.",
+      "Collaborated on the Node.js and Express.js backend integrating a Python Flask face-recognition microservice, MongoDB Atlas persistence, Cloudinary media handling, and Telegram Bot API alerts.",
+      "Delivered a live client-facing product demonstration, including end-to-end walkthroughs of role-based permissions.",
     ],
     technologies: [
       "React",
@@ -62,7 +63,8 @@ export const experienceData: ExperienceItem[] = [
     endDate: "2026-07",
     type: "Virtual Internship",
     bullets: [
-      "Completed a certified virtual internship covering ServiceNow Administration Fundamentals, Agentic AI, Flows, Automated Test Framework (ATF), and Reports, in preparation for the Certified System Administrator (CSA) exam.",
+      "Completed certified coursework in ServiceNow Administration Fundamentals, Flows, Automated Test Framework (ATF), and Reports in preparation for the Certified System Administrator (CSA) exam.",
+      "Covered ServiceNow Agentic AI workflows and enterprise platform administration practices as part of the certified virtual internship.",
     ],
     technologies: [
       "ServiceNow Administration",

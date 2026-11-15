@@ -80,16 +80,11 @@ const QUICK_MODULES: {
   },
 ];
 
-export function DesktopWallpaper({
-  hasActiveWindow,
-  onOpenWindow,
-  onOpenCommandPalette,
-}: DesktopWallpaperProps) {
+// Isolated Digital HUD Clock to prevent 1-second interval re-renders of the wallpaper & card grid
+const DesktopClock = React.memo(function DesktopClock() {
   const [timeString, setTimeString] = useState<string>("");
   const [dateString, setDateString] = useState<string>("");
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  // Live Digital HUD Clock
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
@@ -114,6 +109,35 @@ export function DesktopWallpaper({
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  return (
+    <div className="flex flex-col items-center space-y-1 pt-2 sm:pt-4">
+      <div className="text-3xl sm:text-5xl font-mono font-black tracking-tight text-foreground/90">
+        {timeString || "11:52:18 PM"}
+      </div>
+      <div className="text-xs sm:text-sm font-mono text-muted-foreground font-semibold flex items-center gap-2">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+        <span>{dateString || "Friday, September 18, 2026"}</span>
+      </div>
+    </div>
+  );
+});
+
+export const DesktopWallpaper = React.memo(function DesktopWallpaper({
+  hasActiveWindow,
+  onOpenWindow,
+  onOpenCommandPalette,
+}: DesktopWallpaperProps) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const lastTriggerTime = useRef<Record<string, number>>({});
+
+  const handleOpen = (id: WindowId, e?: React.SyntheticEvent) => {
+    const now = Date.now();
+    const last = lastTriggerTime.current[id] || 0;
+    if (now - last < 300) return;
+    lastTriggerTime.current[id] = now;
+    onOpenWindow(id);
+  };
 
   const prefersReducedMotion = useReducedMotion();
 
@@ -174,9 +198,18 @@ export function DesktopWallpaper({
 
     render();
 
+    const handleVisibility = () => {
+      if (!document.hidden && !prefersReducedMotion) {
+        cancelAnimationFrame(animId);
+        animId = requestAnimationFrame(render);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     return () => {
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", resize);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [hasActiveWindow, prefersReducedMotion]);
 
@@ -184,25 +217,17 @@ export function DesktopWallpaper({
     <AnimatePresence>
       {!hasActiveWindow && (
         <motion.div
-          initial={{ opacity: 0, scale: 0.97 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.97 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 flex flex-col items-center justify-between p-4 sm:p-8 overflow-y-auto no-scrollbar pointer-events-auto select-none z-0"
         >
           {/* Canvas Background Mesh */}
           <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none -z-10" />
 
-          {/* Top Clock HUD & System Telemetry Bar */}
-          <div className="flex flex-col items-center space-y-1 pt-2 sm:pt-4">
-            <div className="text-3xl sm:text-5xl font-mono font-black tracking-tight text-foreground/90">
-              {timeString || "11:52:18 PM"}
-            </div>
-            <div className="text-xs sm:text-sm font-mono text-muted-foreground font-semibold flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>{dateString || "Friday, September 18, 2026"}</span>
-            </div>
-          </div>
+          {/* Top Clock HUD & System Telemetry Bar (Memoized subcomponent) */}
+          <DesktopClock />
 
           {/* Central Holographic Emblem Badge */}
           <div className="my-auto py-2 flex flex-col items-center text-center space-y-3 max-w-3xl w-full">
@@ -252,8 +277,11 @@ export function DesktopWallpaper({
                 return (
                   <button
                     key={mod.id}
-                    onClick={() => onOpenWindow(mod.id)}
-                    className="p-3.5 rounded-2xl border border-white/40 dark:border-white/12 bg-white/85 dark:bg-[#121626]/85 backdrop-blur-2xl text-left transition-all duration-200 group hover:border-accent-blue/60 hover:bg-white dark:hover:bg-[#161a2e] hover:shadow-[0_10px_30px_rgba(10,132,255,0.2)] hover:-translate-y-0.5 shadow-sm flex items-center justify-between cursor-pointer"
+                    onPointerDown={(e) => {
+                      if (e.button === 0) handleOpen(mod.id, e);
+                    }}
+                    onClick={(e) => handleOpen(mod.id, e)}
+                    className="p-3.5 rounded-2xl border border-white/40 dark:border-white/12 bg-white/85 dark:bg-[#121626]/85 backdrop-blur-2xl text-left transition-all duration-100 group hover:border-accent-blue/60 hover:bg-white dark:hover:bg-[#161a2e] hover:shadow-[0_10px_30px_rgba(10,132,255,0.2)] hover:-translate-y-0.5 hover:scale-[1.02] shadow-sm flex items-center justify-between cursor-pointer"
                   >
                     <div className="flex items-center gap-3 min-w-0 pr-2">
                       <div className={`w-9 h-9 rounded-xl bg-gradient-to-tr ${mod.gradient} flex items-center justify-center shrink-0 border border-white/20 shadow-md text-white`}>
@@ -300,4 +328,4 @@ export function DesktopWallpaper({
       )}
     </AnimatePresence>
   );
-}
+});

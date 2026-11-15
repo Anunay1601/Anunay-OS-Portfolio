@@ -52,7 +52,7 @@ export function AboutLogoModal({ isOpen, onClose, onLaunchOS }: AboutLogoModalPr
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 select-none overflow-y-auto">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-3 sm:p-4 select-none overflow-y-auto">
           {/* Backdrop with dark blur */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -64,10 +64,10 @@ export function AboutLogoModal({ isOpen, onClose, onLaunchOS }: AboutLogoModalPr
 
           {/* Dialog Container */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.92, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.92, y: 12 }}
-            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
             className="relative w-full max-w-md my-auto max-h-[92vh] rounded-2xl border border-white/20 dark:border-white/10 bg-white/95 dark:bg-[#0D101C]/95 backdrop-blur-3xl shadow-[0_25px_60px_rgba(0,0,0,0.6)] overflow-y-auto no-scrollbar z-10 flex flex-col"
             onClick={(e) => e.stopPropagation()}
             role="dialog"

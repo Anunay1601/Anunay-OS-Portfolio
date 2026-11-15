@@ -23,32 +23,34 @@ export function SystemLogsContent() {
     <div className="h-full flex flex-col space-y-3 font-sans overflow-hidden select-none">
       {/* Tab Switcher */}
       <div className="flex items-center justify-between border-b border-border/60 pb-2 shrink-0">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
           <button
             onClick={() => setActiveTab("deployments")}
-            className={`px-3 py-1 rounded-apple-sm text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-2.5 sm:px-3 py-1 rounded-apple-sm text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 shrink-0 ${
               activeTab === "deployments"
                 ? "bg-accent-blue text-white shadow-sm"
                 : "bg-surface/50 text-muted-foreground hover:bg-surface-hover hover:text-foreground border border-border/60"
             }`}
           >
-            <Briefcase className="w-3.5 h-3.5" />
-            <span>DEPLOYMENTS (EXPERIENCE)</span>
+            <Briefcase className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden sm:inline">DEPLOYMENTS (EXPERIENCE)</span>
+            <span className="sm:hidden">EXPERIENCE</span>
           </button>
           <button
             onClick={() => setActiveTab("education")}
-            className={`px-3 py-1 rounded-apple-sm text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 ${
+            className={`px-2.5 sm:px-3 py-1 rounded-apple-sm text-xs font-mono font-semibold transition-colors flex items-center gap-1.5 shrink-0 ${
               activeTab === "education"
                 ? "bg-accent-blue text-white shadow-sm"
                 : "bg-surface/50 text-muted-foreground hover:bg-surface-hover hover:text-foreground border border-border/60"
             }`}
           >
-            <GraduationCap className="w-3.5 h-3.5" />
-            <span>ACADEMIC LOGS (EDUCATION)</span>
+            <GraduationCap className="w-3.5 h-3.5 shrink-0" />
+            <span className="hidden sm:inline">ACADEMIC LOGS (EDUCATION)</span>
+            <span className="sm:hidden">EDUCATION</span>
           </button>
         </div>
 
-        <div className="text-[10px] font-mono text-muted-foreground hidden sm:flex items-center gap-1">
+        <div className="text-[10px] font-mono text-muted-foreground hidden lg:flex items-center gap-1 shrink-0">
           <Activity className="w-3 h-3 text-emerald-400" />
           <span>VERIFIED RESUME RECORD</span>
         </div>

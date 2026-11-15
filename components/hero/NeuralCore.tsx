@@ -35,8 +35,8 @@ export interface CoreNode {
 }
 
 const CATEGORY_COLORS: Record<CoreNode["category"], { color: string; glow: string; label: string }> = {
-  "AI/ML": { color: "#0A84FF", glow: "rgba(10, 132, 255, 0.4)", label: "AI & ML" },
-  Language: { color: "#A855F7", glow: "rgba(168, 85, 247, 0.4)", label: "Languages" },
+  "AI/ML": { color: "#4F8CFF", glow: "rgba(79, 140, 255, 0.4)", label: "AI & ML" },
+  Language: { color: "#8B5CF6", glow: "rgba(139, 92, 246, 0.4)", label: "Languages" },
   Frontend: { color: "#10B981", glow: "rgba(16, 185, 129, 0.4)", label: "Frontend" },
   Automation: { color: "#F59E0B", glow: "rgba(245, 158, 11, 0.4)", label: "Automation" },
 };
@@ -182,7 +182,7 @@ export function NeuralCore() {
 
   return (
     <div
-      className="relative w-full h-full min-h-[360px] rounded-apple-xl border border-white/20 dark:border-white/10 bg-white/40 dark:bg-[#0C0E17]/60 backdrop-blur-3xl overflow-hidden select-none flex flex-col justify-between shadow-2xl"
+      className="relative w-full h-full min-h-[360px] rounded-2xl border border-white/[0.08] bg-[#0E1015] overflow-hidden select-none flex flex-col justify-between shadow-2xl"
       tabIndex={0}
       aria-label="Solar System interactive technology core."
     >
@@ -195,11 +195,11 @@ export function NeuralCore() {
         }}
       />
 
-      {/* Glass Header Bar with Category Filter Chips & Controls */}
-      <div className="relative z-30 p-2.5 sm:p-3.5 flex flex-wrap items-center justify-between gap-2 border-b border-white/10 dark:border-white/5 bg-white/70 dark:bg-[#101320]/80 backdrop-blur-md">
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full border border-white/30 dark:border-white/15 bg-white/90 dark:bg-[#121624]/90 text-xs font-mono font-semibold text-foreground shadow-sm">
-          <Zap className="w-3.5 h-3.5 text-accent-blue animate-pulse" />
-          <span className="hidden xs:inline">ANUNAY CORE</span>
+      {/* Refined Header Bar with Category Filter Chips & Controls */}
+      <div className="relative z-30 p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-2 border-b border-white/[0.06] bg-[#111319]/90 backdrop-blur-md">
+        <div className="flex items-center gap-2 px-2.5 py-1 rounded-full border border-white/[0.08] bg-white/[0.03] text-xs font-mono font-medium text-foreground shadow-sm">
+          <Zap className="w-3.5 h-3.5 text-accent-blue" />
+          <span className="hidden xs:inline">NEURAL CORE</span>
           <span className="text-[10px] text-muted-foreground font-mono">v1.0</span>
         </div>
 
@@ -286,9 +286,10 @@ export function NeuralCore() {
           {isCoreOpen && (
             <motion.div
               key="core-engine-overlay"
-              initial={{ opacity: 0, scale: 0.9, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="absolute bottom-3 left-3 right-3 z-50 p-4 rounded-apple-xl border border-teal-500/30 bg-white/95 dark:bg-[#0D121F]/95 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] max-w-lg mx-auto space-y-3"
             >
@@ -366,9 +367,10 @@ export function NeuralCore() {
           {selectedNode && (
             <motion.div
               key={selectedNode.id}
-              initial={{ opacity: 0, scale: 0.9, y: 16 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
               onClick={(e) => e.stopPropagation()}
               className="absolute bottom-3 left-3 right-3 z-50 p-4 rounded-apple-xl border border-white/40 dark:border-white/20 bg-white/90 dark:bg-[#10131E]/95 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] max-w-lg mx-auto space-y-3"
             >

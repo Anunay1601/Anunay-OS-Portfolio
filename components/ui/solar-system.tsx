@@ -237,6 +237,17 @@ const DEFAULT_ORBITS: OrbitConfig[] = [
   },
 ];
 
+// Static cosmic dust particle animations coordinates (hoisted to prevent per-render allocations)
+const STATIC_DUST_ITEMS = [
+  { delay: "-4s", radius: "var(--dust-r1, 140px)", color: "#00f5d4" },
+  { delay: "-11s", radius: "var(--dust-r2, 210px)", color: "#a855f7" },
+  { delay: "-19s", radius: "var(--dust-r3, 270px)", color: "#3b82f6" },
+  { delay: "-28s", radius: "var(--dust-r4, 320px)", color: "#00f5d4" },
+  { delay: "-7s", radius: "var(--dust-r5, 170px)", color: "#ec4899" },
+  { delay: "-15s", radius: "var(--dust-r6, 290px)", color: "#eab308" },
+  { delay: "-23s", radius: "var(--dust-r7, 340px)", color: "#a855f7" },
+];
+
 export const SolarSystem = React.forwardRef<HTMLDivElement, SolarSystemProps>(
   (
     {
@@ -255,17 +266,7 @@ export const SolarSystem = React.forwardRef<HTMLDivElement, SolarSystemProps>(
   ) => {
     const [hoveredId, setHoveredId] = useState<string | null>(null);
     const [isCenterHovered, setIsCenterHovered] = useState<boolean>(false);
-
-    // Cosmic dust particle animations coordinates
-    const dustItems = [
-      { delay: "-4s", radius: "var(--dust-r1, 140px)", color: "#00f5d4" },
-      { delay: "-11s", radius: "var(--dust-r2, 210px)", color: "#a855f7" },
-      { delay: "-19s", radius: "var(--dust-r3, 270px)", color: "#3b82f6" },
-      { delay: "-28s", radius: "var(--dust-r4, 320px)", color: "#00f5d4" },
-      { delay: "-7s", radius: "var(--dust-r5, 170px)", color: "#ec4899" },
-      { delay: "-15s", radius: "var(--dust-r6, 290px)", color: "#eab308" },
-      { delay: "-23s", radius: "var(--dust-r7, 340px)", color: "#a855f7" },
-    ];
+    const dustItems = STATIC_DUST_ITEMS;
 
     return (
       <div
@@ -411,6 +412,9 @@ export const SolarSystem = React.forwardRef<HTMLDivElement, SolarSystemProps>(
             pointer-events: auto;
             transition: border-color 0.25s, color 0.25s, background 0.25s, box-shadow 0.25s, transform 0.25s;
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: geometricPrecision;
           }
 
           .orbit-logo-card::before {

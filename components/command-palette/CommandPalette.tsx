@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { WindowId } from "@/hooks/useOSStore";
 import { useRouter, usePathname } from "next/navigation";
@@ -43,19 +44,25 @@ const MODULES: CommandItem[] = [
   { id: "dev-env", title: "Skills", subtitle: "Interconnected technology & stack matrix", category: "Module", icon: Code2, windowId: "dev-env", sectionHash: "#skills" },
   { id: "system-logs", title: "Experience", subtitle: "Workplace deployments & internships", category: "Module", icon: History, windowId: "system-logs", sectionHash: "#experience" },
   { id: "education", title: "Education", subtitle: "Academic degree & CGPA details", category: "Module", icon: GraduationCap, windowId: "system-logs", sectionHash: "#education" },
-  { id: "neural-core", title: "Neural Core", subtitle: "Interactive skill node network", category: "Module", icon: Cpu, windowId: "neural-core", sectionHash: "#hero" },
+  { id: "credential-vault", title: "Certifications", subtitle: "Verified technical credentials", category: "Module", icon: Award, windowId: "credential-vault", sectionHash: "#certifications" },
+  { id: "neural-core", title: "Neural Core", subtitle: "Interactive skill node network", category: "Module", icon: Cpu, windowId: "neural-core", sectionHash: "#about" },
   { id: "automation-core", title: "Automation", subtitle: "n8n visual workflow engine", category: "Module", icon: Workflow, windowId: "automation-core" },
   { id: "terminal", title: "Terminal", subtitle: "CLI shell with interactive commands", category: "Module", icon: Terminal, windowId: "terminal" },
   { id: "resume", title: "Resume", subtitle: "Verified official CV & PDF download", category: "Module", icon: FileText, windowId: "resume" },
-  { id: "contact", title: "Contact", subtitle: "Direct email & social redirects", category: "Module", icon: Mail, windowId: "contact", sectionHash: "#contact" },
+  { id: "contact", title: "Contact", subtitle: "Direct email & social redirects", category: "Module", icon: Mail, windowId: "contact" },
 ];
 
 export function CommandPalette({ isOpen, onClose, onSelectModule }: CommandPaletteProps) {
+  const [mounted, setMounted] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filtered = MODULES.filter(
     (m) =>
@@ -118,7 +125,9 @@ export function CommandPalette({ isOpen, onClose, onSelectModule }: CommandPalet
     }
   };
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -126,17 +135,17 @@ export function CommandPalette({ isOpen, onClose, onSelectModule }: CommandPalet
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/50"
+          className="fixed inset-0 z-[60] flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/50"
           onClick={onClose}
         >
           <motion.div
             role="dialog"
             aria-modal="true"
             aria-label="Command Search Palette"
-            initial={{ opacity: 0, scale: 0.98, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.98, y: -8 }}
-            transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: [0.16, 1, 0.3, 1] }}
             onClick={(e) => e.stopPropagation()}
             className="w-full max-w-xl apple-liquid-palette overflow-hidden flex flex-col crisp-text select-none relative shadow-2xl"
           >
@@ -261,6 +270,7 @@ export function CommandPalette({ isOpen, onClose, onSelectModule }: CommandPalet
           </motion.div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }

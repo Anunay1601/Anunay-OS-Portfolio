@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WindowId, WindowState } from "@/hooks/useOSStore";
 import {
@@ -45,11 +45,20 @@ const DOCK_ITEMS: DockItem[] = [
   { id: "contact", label: "Contact", icon: Mail, colorGradient: "from-rose-500 via-red-500 to-red-600", glowColor: "rgba(244, 63, 94, 0.45)", category: "utility" },
 ];
 
-export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProps) {
-  const [hoveredId, setHoveredId] = useState<WindowId | null>(null);
+const CORE_ITEMS = DOCK_ITEMS.filter((item) => item.category === "core");
+const UTILITY_ITEMS = DOCK_ITEMS.filter((item) => item.category === "utility");
 
-  const coreItems = DOCK_ITEMS.filter((item) => item.category === "core");
-  const utilityItems = DOCK_ITEMS.filter((item) => item.category === "utility");
+export const DockBar = React.memo(function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProps) {
+  const [hoveredId, setHoveredId] = useState<WindowId | null>(null);
+  const lastTriggerTime = useRef<Record<string, number>>({});
+
+  const handleTrigger = (id: WindowId, e?: React.SyntheticEvent) => {
+    const now = Date.now();
+    const last = lastTriggerTime.current[id] || 0;
+    if (now - last < 300) return; // Deduplicate pointerdown + click
+    lastTriggerTime.current[id] = now;
+    onToggleWindow(id);
+  };
 
   const renderDockItem = (item: DockItem) => {
     const Icon = item.icon;
@@ -72,7 +81,7 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
               initial={{ opacity: 0, y: 4, scale: 0.94 }}
               animate={{ opacity: 1, y: -50, scale: 1 }}
               exit={{ opacity: 0, y: 2, scale: 0.94 }}
-              transition={{ duration: 0.12, ease: "easeOut" }}
+              transition={{ duration: 0.08, ease: "easeOut" }}
               className="absolute z-50 px-3 py-1 rounded-full text-[11px] font-mono font-bold bg-white/85 dark:bg-[#080B15]/90 border border-white/50 dark:border-white/20 text-foreground whitespace-nowrap shadow-[0_8px_24px_rgba(0,0,0,0.25)] backdrop-blur-2xl pointer-events-none flex items-center gap-1.5"
             >
               <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse" />
@@ -81,15 +90,18 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
           )}
         </AnimatePresence>
 
-        {/* Liquid Glass Dock Icon Button - Exact hover behavior retained */}
+        {/* Liquid Glass Dock Icon Button - Instant zero-delay trigger on pointerdown */}
         <motion.button
-          onClick={() => onToggleWindow(item.id)}
+          onPointerDown={(e) => {
+            if (e.button === 0) handleTrigger(item.id, e);
+          }}
+          onClick={(e) => handleTrigger(item.id, e)}
           whileHover={{ scale: 1.25, y: -6 }}
           whileTap={{ scale: 0.9 }}
-          transition={{ type: "spring", stiffness: 500, damping: 25, mass: 0.4 }}
+          transition={{ type: "spring", stiffness: 900, damping: 26, mass: 0.15 }}
           aria-label={`Open ${item.label}`}
           className={cn(
-            "w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-accent-blue/50 relative cursor-pointer transition-all duration-200 border liquid-glass-btn z-10",
+            "w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-accent-blue/50 relative cursor-pointer transition-colors duration-150 border liquid-glass-btn z-10",
             isActive
               ? `bg-gradient-to-tr ${item.colorGradient} text-white border-white/60 shadow-lg shadow-accent-blue/40 ring-2 ring-white/40`
               : isOpen
@@ -103,9 +115,9 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
           }
         >
           {/* Glass Inner Specular Lens Highlight */}
-          <span className="absolute inset-0 rounded-2xl bg-gradient-to-b from-white/35 via-transparent to-black/10 pointer-events-none z-10" />
+          <span className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-b from-white/35 via-transparent to-black/10 pointer-events-none z-10" />
 
-          <Icon className={cn("w-5 h-5 transition-transform duration-200 z-20 relative", isActive && "scale-105")} />
+          <Icon className={cn("w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5 sm:h-5 transition-transform duration-200 z-20 relative", isActive && "scale-105")} />
         </motion.button>
 
         {/* Absolutely Positioned Active Indicator Dot (Zero Layout Shift on Open/Close) */}
@@ -117,7 +129,7 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
               exit={{ opacity: 0, scale: 0 }}
               transition={{ duration: 0.15 }}
               className={cn(
-                "absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full transition-all duration-200 pointer-events-none z-20",
+                "absolute -bottom-2 sm:-bottom-2.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full transition-colors duration-150 pointer-events-none z-20",
                 isActive
                   ? "bg-accent-blue scale-125 shadow-[0_0_8px_#0A84FF]"
                   : "bg-muted-foreground/60"
@@ -130,31 +142,31 @@ export function DockBar({ windows, onToggleWindow, activeWindowId }: DockBarProp
   };
 
   return (
-    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-[95vw] pointer-events-auto select-none">
+    <div className="fixed bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-[98vw] sm:max-w-[95vw] pointer-events-auto select-none px-1">
       {/* Ultra-Glassy Apple Capsule Dock Bar */}
       <nav
         role="toolbar"
         aria-label="ANUNAY OS Application Dock"
-        className="px-4 py-2.5 sm:px-5 sm:py-3 rounded-full apple-liquid-dock relative flex items-center gap-1.5 sm:gap-2.5"
+        className="px-2.5 py-1.5 xs:px-3 xs:py-2 sm:px-5 sm:py-3 rounded-full apple-liquid-dock relative flex items-center gap-1 sm:gap-2.5 overflow-x-auto no-scrollbar max-w-full touch-pan-x"
       >
         {/* Specular Highlight Streak */}
         <div className="absolute inset-x-6 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/90 dark:via-white/40 to-transparent pointer-events-none" />
 
         {/* Core Apps Group */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          {coreItems.map(renderDockItem)}
+        <div className="flex items-center gap-0.5 xs:gap-1 sm:gap-2">
+          {CORE_ITEMS.map(renderDockItem)}
         </div>
 
         {/* Liquid Metallic Vertical Divider */}
-        <div className="h-6 w-px bg-gradient-to-b from-transparent via-black/25 dark:via-white/30 to-transparent mx-1.5 shrink-0" />
+        <div className="h-5 sm:h-6 w-px bg-gradient-to-b from-transparent via-black/25 dark:via-white/30 to-transparent mx-1 sm:mx-1.5 shrink-0" />
 
         {/* Utilities Group */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          {utilityItems.map(renderDockItem)}
+        <div className="flex items-center gap-0.5 xs:gap-1 sm:gap-2">
+          {UTILITY_ITEMS.map(renderDockItem)}
         </div>
       </nav>
     </div>
   );
-}
+});
 
 

@@ -157,7 +157,7 @@ ${experienceData
   ) {
     return `### Current Academic & Technical Focus
 
-* **Degree & Field**: B.Tech in Computer Science Engineering (AI & ML) at **VIT Bhopal University** (2024–2028, **CGPA: 8.51 / 10**).
+* **Degree & Field**: B.Tech in Computer Science Engineering (AI & ML) at **VIT Bhopal University** (2024–2028, **CGPA: ${profileData.cgpa}**).
 * **Current Focus Areas**: Generative AI architectures, Agentic AI, n8n visual automation pipelines, cloud deployments (Render/Vercel), and high-performance WebGL 3D interfaces.
 * **Recent Certifications**: ServiceNow Virtual Internship (Jul 2026), Applied ML in Python (Univ. of Michigan), and NPTEL Programming with Generative AI.`;
   }

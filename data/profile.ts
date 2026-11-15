@@ -28,5 +28,5 @@ export const profileData: Profile = {
   instagram: "TODO",
   university: "VIT Bhopal University",
   degree: "B.Tech in Computer Science Engineering (AI & ML)",
-  cgpa: "8.51 / 10",
+  cgpa: "8.49 / 10",
 };

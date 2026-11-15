@@ -49,7 +49,7 @@ All personal data, projects, experience, skills, and certifications are stored s
 - `data/projects.ts`: Atithi VMS, PrivacyShield AI, Shriji Polymers 3D, Atlas Voice Assistant
 - `data/skills.ts`: Categorized technical skill matrix
 - `data/experience.ts`: Datatrack, Quantumard Technologies, ServiceNow Virtual Internship
-- `data/education.ts`: VIT Bhopal University (B.Tech CSE AI&ML, 8.51 CGPA), Takshshila Academy
+- `data/education.ts`: VIT Bhopal University (B.Tech CSE AI&ML, 8.49 CGPA), Takshshila Academy
 - `data/certifications.ts`: ServiceNow, NPTEL, Michigan, MATLAB credentials
 - `data/timeline.ts`: Unified system log timeline entries
 

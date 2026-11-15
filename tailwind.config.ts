@@ -31,18 +31,18 @@ const config: Config = {
         },
         accent: {
           blue: {
-            DEFAULT: "#0A84FF",
-            glow: "rgba(10, 132, 255, 0.25)",
-            subtle: "rgba(10, 132, 255, 0.12)",
+            DEFAULT: "#4F8CFF",
+            glow: "rgba(79, 140, 255, 0.20)",
+            subtle: "rgba(79, 140, 255, 0.08)",
           },
           violet: {
             DEFAULT: "#8B5CF6",
-            glow: "rgba(139, 92, 246, 0.25)",
-            subtle: "rgba(139, 92, 246, 0.12)",
+            glow: "rgba(139, 92, 246, 0.20)",
+            subtle: "rgba(139, 92, 246, 0.08)",
           },
           emerald: {
             DEFAULT: "#10B981",
-            glow: "rgba(16, 185, 129, 0.25)",
+            glow: "rgba(16, 185, 129, 0.20)",
           }
         },
         border: "var(--border-color)",
@@ -50,22 +50,18 @@ const config: Config = {
       fontFamily: {
         sans: [
           "var(--font-sans)",
+          "'Plus Jakarta Sans'",
+          "'Inter'",
           "-apple-system",
           "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
           "sans-serif",
         ],
         heading: [
           "var(--font-heading)",
+          "'Outfit'",
+          "'Plus Jakarta Sans'",
           "-apple-system",
           "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Helvetica Neue",
-          "Arial",
           "sans-serif",
         ],
         mono: [

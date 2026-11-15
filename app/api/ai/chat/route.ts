@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { getVerifiedPortfolioContext } from "@/lib/ai/portfolioContext";
 import { generatePortfolioFallbackResponse } from "@/lib/ai/fallbackEngine";
 
+export const dynamic = "force-dynamic";
+
 // Lightweight in-memory rate limiter (sliding window)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minute

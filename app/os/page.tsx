@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useOSStore, WindowId } from "@/hooks/useOSStore";
 import { TopBar } from "@/components/os/TopBar";
@@ -22,15 +22,30 @@ export default function OSDesktopPage() {
   } = useOSStore();
 
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth < 768 : false
+  );
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    let rafId: number | null = null;
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        setIsMobile(window.innerWidth < 768);
+      });
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   useEffect(() => {
@@ -54,10 +69,12 @@ export default function OSDesktopPage() {
         openWindow(targetModule);
       }
     }
-  }, [openWindow, windows]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openWindow]);
 
-  const openWindows = Object.values(windows).filter(
-    (win) => win.isOpen && !win.isMinimized
+  const openWindows = useMemo(
+    () => Object.values(windows).filter((win) => win.isOpen && !win.isMinimized),
+    [windows]
   );
 
   const hasActiveWindow = openWindows.length > 0;
@@ -84,7 +101,7 @@ export default function OSDesktopPage() {
         />
 
         <AnimatePresence>
-          {openWindows.map((winState) => (
+          {mounted && openWindows.map((winState) => (
             <OSWindow
               key={winState.id}
               windowState={winState}

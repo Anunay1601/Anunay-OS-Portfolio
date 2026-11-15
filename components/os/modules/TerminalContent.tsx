@@ -36,15 +36,15 @@ export function TerminalContent() {
               <div className="text-muted-foreground">----------------</div>
               <div><span className="text-accent-blue font-semibold">OS:</span> ANUNAY OS v1.0 Kernel (x86_64)</div>
               <div><span className="text-accent-blue font-semibold">Host:</span> VIT Bhopal University (B.Tech CSE AI & ML)</div>
-              <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: 8.51/10)</div>
+              <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: {profileData.cgpa})</div>
               <div><span className="text-accent-blue font-semibold">Location:</span> {profileData.location}</div>
               <div><span className="text-accent-blue font-semibold">Shell:</span> zsh 5.9 (x86_64-apple-darwin)</div>
               <div><span className="text-accent-blue font-semibold">Core Stack:</span> Java, Python, TypeScript, React, Next.js, n8n</div>
-              <div><span className="text-accent-blue font-semibold">Deployments:</span> 4 Verified Systems • {certificationsData.length} Certifications</div>
+              <div><span className="text-accent-blue font-semibold">Deployments:</span> {projectsData.length} Verified Systems • {certificationsData.length} Certifications</div>
             </div>
           </div>
           <div className="text-muted-foreground pt-1 border-t border-white/10">
-            Type <span className="text-accent-blue font-bold">'help'</span> to see all available commands.
+            Type <span className="text-accent-blue font-bold">&apos;help&apos;</span> to see all available commands.
           </div>
         </div>
       ),
@@ -128,7 +128,7 @@ export function TerminalContent() {
             <div>{profileData.tagline}</div>
             <div className="text-muted-foreground">{profileData.summary}</div>
             <div className="pt-1 text-emerald-400 font-semibold">
-              VIT Bhopal University • B.Tech CSE (AI & ML) • CGPA: 8.51 / 10
+              {profileData.university} • B.Tech CSE (AI & ML) • CGPA: {profileData.cgpa}
             </div>
           </div>
         );
@@ -316,10 +316,11 @@ export function TerminalContent() {
                 <div className="text-muted-foreground">----------------</div>
                 <div><span className="text-accent-blue font-semibold">OS:</span> ANUNAY OS v1.0 Kernel (x86_64)</div>
                 <div><span className="text-accent-blue font-semibold">Host:</span> VIT Bhopal University (B.Tech CSE AI & ML)</div>
-                <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: 8.51/10)</div>
+                <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: {profileData.cgpa})</div>
                 <div><span className="text-accent-blue font-semibold">Location:</span> {profileData.location}</div>
                 <div><span className="text-accent-blue font-semibold">Shell:</span> zsh 5.9 (x86_64-apple-darwin)</div>
                 <div><span className="text-accent-blue font-semibold">Core Stack:</span> Java, Python, TypeScript, React, Next.js, n8n</div>
+                <div><span className="text-accent-blue font-semibold">Deployments:</span> {projectsData.length} Verified Systems • {certificationsData.length} Certifications</div>
               </div>
             </div>
           </div>
@@ -329,7 +330,7 @@ export function TerminalContent() {
       default:
         output = (
           <div className="text-xs font-mono text-red-400">
-            zsh: command not found: '{cmd}'. Type <span className="text-accent-blue font-bold">'help'</span> for available commands.
+            zsh: command not found: &apos;{cmd}&apos;. Type <span className="text-accent-blue font-bold">&apos;help&apos;</span> for available commands.
           </div>
         );
     }
@@ -347,7 +348,7 @@ export function TerminalContent() {
           <Terminal className="w-3.5 h-3.5 text-accent-blue" />
           <span>anunay@os ~ zsh 5.9</span>
         </span>
-        <span className="hidden sm:inline">Use ↑ ↓ for history • Type 'help'</span>
+        <span className="hidden sm:inline">Use ↑ ↓ for history • Type &apos;help&apos;</span>
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-4 pr-1 scrollbar-thin">

@@ -3,164 +3,168 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
-import { Button } from "@/components/ui/Button";
-import { LiquidMetalButton } from "@/components/ui/liquid-metal";
-import { RadialGlowButton } from "@/components/ui/radial-glow-button";
 import { profileData } from "@/data/profile";
 import { certificationsData } from "@/data/certifications";
 import { projectsData } from "@/data/projects";
 import { fadeIn, staggerContainer } from "@/lib/animations";
+import { AbstractNeuralCore } from "@/components/hero/AbstractNeuralCore";
+import { LiquidMetalButton } from "@/components/ui/liquid-metal";
 import {
   Monitor,
   FileText,
   Github,
   Linkedin,
+  ArrowDown,
   ArrowRight,
   ArrowUpRight,
-  Sparkles,
-  ShieldCheck,
   Code2,
-  Cpu,
-  Workflow,
-  Zap,
 } from "lucide-react";
-
-// Dynamic import with zero SSR block and non-blocking loading skeleton
-const NeuralCore = dynamic(
-  () => import("@/components/hero/NeuralCore").then((mod) => mod.NeuralCore),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="w-full h-full rounded-2xl border border-white/20 dark:border-white/10 bg-white/60 dark:bg-[#0c0e18]/80 backdrop-blur-xl flex flex-col items-center justify-center space-y-3 shadow-lg">
-        <div className="w-12 h-12 rounded-2xl bg-accent-blue/10 border border-accent-blue/25 flex items-center justify-center animate-pulse">
-          <Cpu className="w-6 h-6 text-accent-blue" />
-        </div>
-        <div className="text-center space-y-1">
-          <span className="text-xs font-mono font-semibold text-foreground">Loading Technology Network...</span>
-          <p className="text-[10px] font-mono text-muted-foreground">Preparing interactive 3D nodes</p>
-        </div>
-      </div>
-    ),
-  }
-);
 
 export function HeroSection() {
   return (
-    <section id="about" className="relative pt-8 pb-12 md:pt-16 md:pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden select-none">
-      {/* Dynamic Background Gradient Orbs */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-br from-accent-blue/10 via-accent-violet/5 to-transparent rounded-full blur-[100px] pointer-events-none -z-10" />
-      <div className="absolute -top-10 right-10 w-80 h-80 bg-accent-blue/8 rounded-full blur-[80px] pointer-events-none -z-10" />
+    <section
+      id="about"
+      className="relative min-h-[calc(100vh-4rem)] flex flex-col justify-center py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden select-none"
+    >
+      {/* Subtle Restrained Ambient Lighting */}
+      <div className="absolute top-1/3 left-1/4 -translate-x-1/2 w-[320px] sm:w-[500px] lg:w-[600px] h-[320px] sm:h-[500px] lg:h-[600px] max-w-full bg-accent-blue/[0.04] rounded-full blur-[100px] sm:blur-[140px] pointer-events-none -z-10" />
 
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
+        initial={false}
         animate="visible"
-        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center"
+        className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center my-auto"
       >
-        {/* Left Column: Hero Text Content */}
-        <motion.div variants={fadeIn} className="lg:col-span-5 space-y-5 text-center lg:text-left">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-accent-blue/20 bg-accent-blue/10 backdrop-blur-xl text-xs font-mono font-semibold text-accent-blue shadow-xs">
-            <Sparkles className="w-3.5 h-3.5 text-accent-blue" />
-            <span>{profileData.role}</span>
+        {/* Left Column: Editorial Headline & Identity */}
+        <motion.div variants={fadeIn} className="lg:col-span-7 space-y-3.5 sm:space-y-4 text-center lg:text-left">
+          {/* Eyebrow: Restrained Verified Identifier */}
+          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02] backdrop-blur-md text-[10.5px] xs:text-xs font-mono text-zinc-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-blue animate-pulse shrink-0" />
+            <span className="text-zinc-300 font-semibold tracking-wider uppercase whitespace-nowrap">
+              COMPUTER SCIENCE · AI &amp; ML
+            </span>
+            <span className="text-zinc-600">•</span>
+            <span className="whitespace-nowrap">VIT BHOPAL</span>
           </div>
 
-          {/* Headline Name */}
-          <div className="space-y-2">
-            <h1 className="text-4xl sm:text-6xl lg:text-6xl font-heading font-black tracking-tight text-foreground uppercase">
-              {profileData.name}
+          {/* Main Identity & Editorial Headline */}
+          <div className="space-y-2 sm:space-y-2.5">
+            {/* Dominant Name: Strictly in two deliberate lines (Line 1: ANUNAY, Line 2: CHHAPRE) */}
+            <h1 className="text-4xl xs:text-5xl sm:text-6xl md:text-6xl lg:text-7xl xl:text-[4.75rem] font-black tracking-tight text-[#F5F5F7] font-heading leading-[0.90] uppercase">
+              <span className="block">ANUNAY</span>
+              <span className="block text-zinc-100">CHHAPRE</span>
             </h1>
-            <p className="text-base sm:text-lg font-medium text-foreground/90 max-w-xl">
-              {profileData.tagline}
+
+            {/* Secondary Supporting Quote: Matches Outfit typography of the name */}
+            <p className="text-base sm:text-lg md:text-xl font-medium tracking-[-0.015em] font-heading text-zinc-200 leading-snug">
+              Building thoughtful software.{" "}
+              <span className="text-zinc-400 font-normal">
+                Exploring intelligent systems.
+              </span>
             </p>
           </div>
 
-          {/* Value Statement */}
-          <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl">
-            {profileData.summary}
+          {/* Supporting Text: Natural, unpretentious overview in matching font */}
+          <p className="text-xs sm:text-sm md:text-[14px] text-zinc-400 leading-relaxed max-w-xl font-heading font-normal tracking-[-0.01em]">
+            Computer Science undergraduate at VIT Bhopal University. I develop full-stack software, explore AI automation pipelines, and turn technical ideas into useful digital experiences.
           </p>
 
           {/* Action CTAs */}
-          <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-3">
-            <RadialGlowButton href="/os">
-              <Monitor className="w-4.5 h-4.5" />
-              <span>Launch ANUNAY OS</span>
-              <ArrowRight className="w-4 h-4" />
-            </RadialGlowButton>
+          <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-2.5">
+            {/* Primary Action: Explore My Work - Luminous Electric Capsule */}
+            <a
+              href="#projects"
+              className="relative group inline-flex items-center gap-3 py-2 pl-2 pr-5 rounded-full bg-gradient-to-r from-blue-600 via-accent-blue to-blue-500 text-white font-semibold text-xs sm:text-sm border border-white/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_12px_32px_-8px_rgba(37,99,235,0.5)] hover:shadow-[0_16px_40px_-6px_rgba(79,140,255,0.65)] hover:-translate-y-0.5 active:scale-[0.98] transition-all duration-200 cursor-pointer overflow-hidden"
+            >
+              {/* Ambient Glow Aura */}
+              <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-blue-600 via-accent-blue to-cyan-400 opacity-40 blur-md group-hover:opacity-85 transition-opacity duration-300 pointer-events-none -z-10" />
 
+              {/* Shimmer Sheen Sweep */}
+              <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent pointer-events-none rounded-full" />
+
+              {/* Relatable Icon Pod: Software engineering & projects icon */}
+              <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)] shrink-0">
+                <Code2 className="w-3.5 h-3.5 text-white group-hover:scale-110 transition-transform duration-200" />
+              </div>
+
+              <span>Explore My Work</span>
+              <ArrowDown className="w-3.5 h-3.5 text-white/90 group-hover:translate-y-0.5 transition-transform" />
+            </a>
+
+            {/* Secondary Action: Enter ANUNAY OS - VengeanceUI Liquid Metal Style */}
             <LiquidMetalButton
-              href="/resume"
+              href="/os"
               size="sm"
-              icon={<FileText className="w-4 h-4 text-accent-blue dark:text-cyan-400" />}
-              borderWidth={3}
+              borderWidth={2.5}
               metalConfig={{
-                colorBack: "#202538",
-                colorTint: "#00f5d4",
-                speed: 0.6,
+                colorBack: "#1e293b",
+                colorTint: "#60a5fa",
+                speed: 0.55,
                 repetition: 4,
                 distortion: 0.18,
               }}
-              className="hover:scale-102 transition-transform shadow-lg shadow-cyan-500/10"
+              icon={<Monitor className="w-3.5 h-3.5 text-accent-blue" />}
             >
-              Resume
+              <span>Enter ANUNAY OS</span>
+              <ArrowRight className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
             </LiquidMetalButton>
+          </div>
 
-            {/* Professional GitHub CTA */}
+          {/* Social Links & Resume: Moderately increased size, strictly smaller than the CTAs above */}
+          <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1 text-xs font-mono">
             <a
               href={profileData.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub Profile"
-              className="group inline-flex items-center justify-center h-12 px-4 rounded-xl border border-border/80 dark:border-white/10 bg-surface/80 dark:bg-[#0B0F1A]/90 backdrop-blur-xl hover:bg-surface dark:hover:bg-[#121826] hover:border-foreground/20 dark:hover:border-white/25 shadow-xs hover:shadow-md hover:shadow-black/5 dark:hover:shadow-black/20 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer gap-2.5 font-sans font-semibold text-sm text-foreground/90 hover:text-foreground"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.025] hover:bg-white/[0.07] hover:border-white/[0.18] text-zinc-300 hover:text-[#F5F5F7] transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-xs"
             >
-              <div className="w-7 h-7 rounded-lg bg-foreground/5 dark:bg-white/10 flex items-center justify-center shrink-0 border border-border/50 dark:border-white/10 group-hover:scale-105 group-hover:bg-foreground/10 dark:group-hover:bg-white/15 transition-all duration-200">
-                <Github className="w-4 h-4 text-foreground transition-transform" />
-              </div>
-              <span className="tracking-tight">GitHub</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+              <Github className="w-4 h-4 text-zinc-400" />
+              <span>GitHub</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
             </a>
 
-            {/* Professional LinkedIn CTA */}
             <a
               href={profileData.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn Profile"
-              className="group inline-flex items-center justify-center h-12 px-4 rounded-xl border border-border/80 dark:border-white/10 bg-surface/80 dark:bg-[#0B0F1A]/90 backdrop-blur-xl hover:bg-[#0A66C2]/[0.05] dark:hover:bg-[#0A66C2]/15 hover:border-[#0A66C2]/40 dark:hover:border-[#0A66C2]/50 shadow-xs hover:shadow-md hover:shadow-[#0A66C2]/10 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer gap-2.5 font-sans font-semibold text-sm text-foreground/90 hover:text-foreground"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.025] hover:bg-white/[0.07] hover:border-white/[0.18] text-zinc-300 hover:text-[#F5F5F7] transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-xs"
             >
-              <div className="w-7 h-7 rounded-lg bg-[#0A66C2]/10 dark:bg-[#0A66C2]/20 flex items-center justify-center shrink-0 border border-[#0A66C2]/20 dark:border-[#38BDF8]/30 group-hover:scale-105 group-hover:bg-[#0A66C2]/20 dark:group-hover:bg-[#0A66C2]/30 transition-all duration-200">
-                <Linkedin className="w-4 h-4 text-[#0A66C2] dark:text-[#38BDF8] transition-transform" />
-              </div>
-              <span className="tracking-tight">LinkedIn</span>
-              <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground group-hover:text-[#0A66C2] dark:group-hover:text-[#38BDF8] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+              <Linkedin className="w-4 h-4 text-zinc-400" />
+              <span>LinkedIn</span>
+              <ArrowUpRight className="w-3.5 h-3.5 text-zinc-500" />
             </a>
+
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border border-white/[0.08] bg-white/[0.025] hover:bg-white/[0.07] hover:border-white/[0.18] text-zinc-300 hover:text-[#F5F5F7] transition-all hover:-translate-y-0.5 active:translate-y-0 shadow-xs"
+            >
+              <FileText className="w-4 h-4 text-accent-blue" />
+              <span>Resume (PDF)</span>
+            </Link>
           </div>
 
-          {/* Stats Bar */}
-          <div className="pt-3 grid grid-cols-3 gap-2 border-t border-border-color">
-            <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-accent-blue">{profileData.cgpa.split(" ")[0]}</div>
-              <div className="text-[10px] font-mono text-muted-foreground">CGPA @ VIT Bhopal</div>
+          {/* Accurate Verified Stats Bar */}
+          <div className="pt-2.5 grid grid-cols-3 gap-2 sm:gap-3 border-t border-white/[0.07] max-w-lg mx-auto lg:mx-0">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#111318]/90 border border-white/[0.06] text-center lg:text-left">
+              <div className="text-sm sm:text-base font-bold font-mono text-accent-blue">{profileData.cgpa.split(" ")[0]}</div>
+              <div className="text-[10px] font-mono text-zinc-400 mt-0.5">CGPA • VIT Bhopal</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-emerald-500 dark:text-emerald-400">{projectsData.length} Systems</div>
-              <div className="text-[10px] font-mono text-muted-foreground">Production Apps</div>
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#111318]/90 border border-white/[0.06] text-center lg:text-left">
+              <div className="text-sm sm:text-base font-bold font-mono text-[#F5F5F7]">{projectsData.length}</div>
+              <div className="text-[10px] font-mono text-zinc-400 mt-0.5">Featured Projects</div>
             </div>
-            <div className="p-2.5 rounded-xl bg-surface-1 border border-border-color backdrop-blur-md text-center lg:text-left">
-              <div className="text-base font-bold font-mono text-purple-500 dark:text-purple-400">{certificationsData.length} Credentials</div>
-              <div className="text-[10px] font-mono text-muted-foreground">Verified Certs</div>
+            <div className="p-2 sm:p-2.5 rounded-xl bg-[#111318]/90 border border-white/[0.06] text-center lg:text-left">
+              <div className="text-sm sm:text-base font-bold font-mono text-[#F5F5F7]">{certificationsData.length}</div>
+              <div className="text-[10px] font-mono text-zinc-400 mt-0.5">Certifications</div>
             </div>
           </div>
         </motion.div>
 
-        {/* Right Column: Expanded Neural Core Display Canvas */}
-        <motion.div variants={fadeIn} className="lg:col-span-7">
-          <div className="relative w-full h-[480px] sm:h-[520px] lg:h-[560px]">
-            {/* Ambient Border Glow */}
-            <div className="absolute -inset-0.5 bg-gradient-to-r from-accent-blue/15 via-accent-violet/10 to-accent-blue/15 rounded-2xl blur-md opacity-20 pointer-events-none" />
-            <NeuralCore />
-          </div>
+        {/* Right Column: Abstract Neural Core Signature Visual */}
+        <motion.div variants={fadeIn} className="lg:col-span-5 flex items-center justify-center">
+          <AbstractNeuralCore />
         </motion.div>
       </motion.div>
     </section>
