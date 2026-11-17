@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WindowId } from "@/hooks/useOSStore";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   Cpu,
   FolderGit2,
@@ -30,55 +29,55 @@ const QUICK_MODULES: {
   gradient: string;
   badge: string;
 }[] = [
-  {
-    id: "neural-core",
-    title: "Neural Core",
-    subtitle: "Interactive 3D Technology Graph",
-    icon: Cpu,
-    gradient: "from-blue-500/20 to-indigo-600/20 border-blue-500/30 text-blue-400",
-    badge: "AI Graph",
-  },
-  {
-    id: "project-lab",
-    title: "Project Lab",
-    subtitle: "4 Verified Production Systems",
-    icon: FolderGit2,
-    gradient: "from-purple-500/20 to-pink-600/20 border-purple-500/30 text-purple-400",
-    badge: "Deployed",
-  },
-  {
-    id: "dev-env",
-    title: "Dev Environment",
-    subtitle: "Skill Matrix & Workplace Deployments",
-    icon: Code2,
-    gradient: "from-sky-500/20 to-blue-600/20 border-sky-500/30 text-sky-400",
-    badge: "Full Stack",
-  },
-  {
-    id: "automation-core",
-    title: "Automation Core",
-    subtitle: "n8n LLM Document Redaction Pipeline",
-    icon: Workflow,
-    gradient: "from-pink-500/20 to-rose-600/20 border-pink-500/30 text-pink-400",
-    badge: "n8n & LLM",
-  },
-  {
-    id: "terminal",
-    title: "Terminal Shell",
-    subtitle: "Interactive Zsh CLI Workstation",
-    icon: Terminal,
-    gradient: "from-emerald-500/20 to-teal-600/20 border-emerald-500/30 text-emerald-400",
-    badge: "CLI Zsh",
-  },
-  {
-    id: "resume",
-    title: "Official Resume",
-    subtitle: "Verified PDF Curriculum Vitae",
-    icon: FileText,
-    gradient: "from-cyan-500/20 to-blue-600/20 border-cyan-500/30 text-cyan-400",
-    badge: "PDF CV",
-  },
-];
+    {
+      id: "neural-core",
+      title: "Neural Core",
+      subtitle: "Interactive 3D Technology Graph",
+      icon: Cpu,
+      gradient: "from-blue-500/20 to-indigo-600/20 border-blue-500/30 text-blue-400",
+      badge: "AI Graph",
+    },
+    {
+      id: "project-lab",
+      title: "Project Lab",
+      subtitle: "4 Verified Production Systems",
+      icon: FolderGit2,
+      gradient: "from-purple-500/20 to-pink-600/20 border-purple-500/30 text-purple-400",
+      badge: "Deployed",
+    },
+    {
+      id: "dev-env",
+      title: "Dev Environment",
+      subtitle: "Skill Matrix & Workplace Deployments",
+      icon: Code2,
+      gradient: "from-sky-500/20 to-blue-600/20 border-sky-500/30 text-sky-400",
+      badge: "Full Stack",
+    },
+    {
+      id: "automation-core",
+      title: "Automation Core",
+      subtitle: "n8n LLM Document Redaction Pipeline",
+      icon: Workflow,
+      gradient: "from-pink-500/20 to-rose-600/20 border-pink-500/30 text-pink-400",
+      badge: "n8n & LLM",
+    },
+    {
+      id: "terminal",
+      title: "Terminal Shell",
+      subtitle: "Interactive Zsh CLI Workstation",
+      icon: Terminal,
+      gradient: "from-emerald-500/20 to-teal-600/20 border-emerald-500/30 text-emerald-400",
+      badge: "CLI Zsh",
+    },
+    {
+      id: "resume",
+      title: "Official Resume",
+      subtitle: "Verified PDF Curriculum Vitae",
+      icon: FileText,
+      gradient: "from-cyan-500/20 to-blue-600/20 border-cyan-500/30 text-cyan-400",
+      badge: "PDF CV",
+    },
+  ];
 
 // Isolated Digital HUD Clock to prevent 1-second interval re-renders of the wallpaper & card grid
 const DesktopClock = React.memo(function DesktopClock() {
@@ -128,7 +127,6 @@ export const DesktopWallpaper = React.memo(function DesktopWallpaper({
   onOpenWindow,
   onOpenCommandPalette,
 }: DesktopWallpaperProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const lastTriggerTime = useRef<Record<string, number>>({});
 
   const handleOpen = (id: WindowId, e?: React.SyntheticEvent) => {
@@ -138,80 +136,6 @@ export const DesktopWallpaper = React.memo(function DesktopWallpaper({
     lastTriggerTime.current[id] = now;
     onOpenWindow(id);
   };
-
-  const prefersReducedMotion = useReducedMotion();
-
-  // Ambient Floating Particle Grid Canvas
-  useEffect(() => {
-    if (hasActiveWindow) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-
-    let animId: number;
-    let particles: { x: number; y: number; vx: number; vy: number; radius: number; alpha: number }[] = [];
-
-    const resize = () => {
-      if (!canvas.parentElement) return;
-      canvas.width = canvas.parentElement.clientWidth || window.innerWidth;
-      canvas.height = canvas.parentElement.clientHeight || window.innerHeight;
-      
-      particles = Array.from({ length: 30 }, () => ({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        radius: Math.random() * 1.8 + 1,
-        alpha: Math.random() * 0.35 + 0.1,
-      }));
-    };
-
-    resize();
-    window.addEventListener("resize", resize);
-
-    const render = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const isDark = document.documentElement.classList.contains("dark");
-
-      particles.forEach((p) => {
-        if (!prefersReducedMotion) {
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0) p.x = canvas.width;
-          if (p.x > canvas.width) p.x = 0;
-          if (p.y < 0) p.y = canvas.height;
-          if (p.y > canvas.height) p.y = 0;
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isDark ? `rgba(10, 132, 255, ${p.alpha})` : `rgba(0, 0, 0, ${p.alpha * 0.4})`;
-        ctx.fill();
-      });
-
-      if (!prefersReducedMotion && !document.hidden) {
-        animId = requestAnimationFrame(render);
-      }
-    };
-
-    render();
-
-    const handleVisibility = () => {
-      if (!document.hidden && !prefersReducedMotion) {
-        cancelAnimationFrame(animId);
-        animId = requestAnimationFrame(render);
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibility);
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener("resize", resize);
-      document.removeEventListener("visibilitychange", handleVisibility);
-    };
-  }, [hasActiveWindow, prefersReducedMotion]);
 
   return (
     <AnimatePresence>
@@ -223,9 +147,6 @@ export const DesktopWallpaper = React.memo(function DesktopWallpaper({
           transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-0 flex flex-col items-center justify-between p-4 sm:p-8 overflow-y-auto no-scrollbar pointer-events-auto select-none z-0"
         >
-          {/* Canvas Background Mesh */}
-          <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none -z-10" />
-
           {/* Top Clock HUD & System Telemetry Bar (Memoized subcomponent) */}
           <DesktopClock />
 

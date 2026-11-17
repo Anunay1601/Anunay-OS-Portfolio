@@ -8,6 +8,7 @@ import { DockBar } from "@/components/os/DockBar";
 import { OSWindow } from "@/components/os/OSWindow";
 import { CommandPalette } from "@/components/command-palette/CommandPalette";
 import { DesktopWallpaper } from "@/components/os/DesktopWallpaper";
+import { DigitalArchitectureWallpaper } from "@/components/os/DigitalArchitectureWallpaper";
 
 export default function OSDesktopPage() {
   const {
@@ -93,6 +94,9 @@ export default function OSDesktopPage() {
 
       {/* Desktop Workspace Window Canvas */}
       <main className="relative flex-1 w-full overflow-hidden">
+        {/* Digital Architecture Environment (Permanent Wallpaper Layer) */}
+        <DigitalArchitectureWallpaper hasActiveWindow={hasActiveWindow} />
+
         {/* Emblem & Quick Launch Badge on Desktop when all windows are minimized */}
         <DesktopWallpaper
           hasActiveWindow={hasActiveWindow}
