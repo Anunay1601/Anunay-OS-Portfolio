@@ -164,9 +164,6 @@ export function SystemLogsContent() {
                         <Calendar className="w-3 h-3 text-accent-blue" />
                         {edu.period}
                       </span>
-                      <span className="px-2 py-0.5 rounded bg-surface border border-border text-emerald-400 font-bold">
-                        {edu.grade}
-                      </span>
                     </div>
                   </div>
 

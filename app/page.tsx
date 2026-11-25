@@ -647,9 +647,6 @@ export default function HomePage() {
                   </span>
                 </div>
                 <p className="text-xs font-semibold text-accent-blue">{edu.degree} — {edu.field}</p>
-                <div className="inline-block px-2.5 py-0.5 rounded text-xs font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
-                  {edu.grade}
-                </div>
                 {edu.details && (
                   <ul className="text-xs text-zinc-400 space-y-1 pt-1 border-t border-white/[0.06]">
                     {edu.details.map((d, i) => (

@@ -148,8 +148,8 @@ export function HeroSection() {
           {/* Accurate Verified Stats Bar */}
           <div className="pt-2.5 grid grid-cols-3 gap-2 sm:gap-3 border-t border-white/[0.07] max-w-lg mx-auto lg:mx-0">
             <div className="p-2 sm:p-2.5 rounded-xl bg-[#111318]/90 border border-white/[0.06] text-center lg:text-left">
-              <div className="text-sm sm:text-base font-bold font-mono text-accent-blue">{profileData.cgpa.split(" ")[0]}</div>
-              <div className="text-[10px] font-mono text-zinc-400 mt-0.5">CGPA • VIT Bhopal</div>
+              <div className="text-sm sm:text-base font-bold font-mono text-accent-blue">B.Tech</div>
+              <div className="text-[10px] font-mono text-zinc-400 mt-0.5">VIT Bhopal University</div>
             </div>
             <div className="p-2 sm:p-2.5 rounded-xl bg-[#111318]/90 border border-white/[0.06] text-center lg:text-left">
               <div className="text-sm sm:text-base font-bold font-mono text-[#F5F5F7]">{projectsData.length}</div>

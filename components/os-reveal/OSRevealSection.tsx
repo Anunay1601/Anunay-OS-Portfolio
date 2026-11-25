@@ -148,8 +148,7 @@ export function OSRevealSection() {
                       </div>
                       <div>
                         <span className="text-zinc-400">Academic:</span>{" "}
-                        <span className="text-zinc-200">{profileData.university}</span>{" "}
-                        <span className="text-emerald-400 font-semibold">· CGPA {profileData.cgpa}</span>
+                        <span className="text-zinc-200">{profileData.university}</span>
                       </div>
                       <div>
                         <span className="text-zinc-400">Projects:</span>{" "}

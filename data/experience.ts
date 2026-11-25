@@ -31,7 +31,7 @@ export const experienceData: ExperienceItem[] = [
     id: "quantumard",
     role: "Full Stack Developer Intern",
     company: "Quantumard Technologies",
-    location: "On-site / Hybrid",
+    location: "Remote",
     period: "Dec 2025 – Jan 2026",
     startDate: "2025-12",
     endDate: "2026-01",

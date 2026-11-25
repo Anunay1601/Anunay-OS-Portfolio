@@ -60,7 +60,7 @@ export const timelineData: TimelineEntry[] = [
     title: "B.Tech CSE (AI & ML) Enrolled",
     subtitle: "VIT Bhopal University",
     category: "EDUCATION",
-    description: "Commenced undergraduate studies in Computer Science Engineering (AI & ML) maintaining 8.49 CGPA.",
-    tags: ["VIT Bhopal", "B.Tech", "AI & ML", "8.49 CGPA"],
+    description: "Commenced undergraduate studies in Computer Science Engineering (AI & ML).",
+    tags: ["VIT Bhopal", "B.Tech", "AI & ML"],
   },
 ];

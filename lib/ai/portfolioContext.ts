@@ -17,7 +17,6 @@ DEVELOPER PROFILE:
 - Email: ${profileData.email}
 - Phone: +91 ${profileData.phone}
 - University: ${profileData.university} (${profileData.degree})
-- CGPA: ${profileData.cgpa}
 - GitHub Profile: ${profileData.github}
 - LinkedIn Profile: ${profileData.linkedin}
 `;
@@ -76,7 +75,7 @@ VERIFIED EDUCATION:
 ${educationData
   .map(
     (ed) => `
-- ${ed.institution} (${ed.period}): ${ed.degree} in ${ed.field}. Grade: ${ed.grade}. Highlights: ${ed.details?.join("; ")}
+- ${ed.institution} (${ed.period}): ${ed.degree} in ${ed.field}. Highlights: ${ed.details?.join("; ")}
 `
   )
   .join("")}

@@ -2,15 +2,88 @@
 
 import React, { useState } from "react";
 import { profileData } from "@/data/profile";
-import { Mail, Phone, MapPin, Send, CheckCircle2, Linkedin, Github, ExternalLink, Globe } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  Loader2,
+  Linkedin,
+  Github,
+  ExternalLink,
+} from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 export function ContactContent() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+    honeypot: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errorMessage) {
+      setErrorMessage(null);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (isSubmitting) return;
+
+    setErrorMessage(null);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        throw new Error(
+          result?.error || "Failed to send message. Please try again."
+        );
+      }
+
+      setSubmitted(true);
+      // Reset form data on successful delivery
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        honeypot: "",
+      });
+    } catch (err: any) {
+      // Preserve form data on failure and display clear error message
+      setErrorMessage(
+        err?.message || "An unexpected error occurred while transmitting your message."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReset = () => {
+    setSubmitted(false);
+    setErrorMessage(null);
   };
 
   return (
@@ -20,7 +93,9 @@ export function ContactContent() {
           <Mail className="w-4 h-4 text-accent-blue" />
           <span>Direct Communication & Network Profiles</span>
         </h3>
-        <p className="text-xs text-muted-foreground">Reach out via email, phone, or connect directly on professional networks</p>
+        <p className="text-xs text-muted-foreground">
+          Reach out via email, phone, or connect directly on professional networks
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1 overflow-y-auto pr-1 no-scrollbar">
@@ -123,43 +198,131 @@ export function ContactContent() {
               Send Direct Message
             </h4>
             {submitted ? (
-              <div className="p-6 text-center space-y-2 bg-emerald-500/10 border border-emerald-500/20 rounded-apple-md">
+              <div className="p-6 text-center space-y-3 bg-emerald-500/10 border border-emerald-500/20 rounded-apple-md">
                 <CheckCircle2 className="w-8 h-8 text-emerald-400 mx-auto" />
-                <div className="text-xs font-bold text-emerald-300">Message Transmitted!</div>
-                <p className="text-[11px] text-muted-foreground">Thank you for reaching out. I will get back to your email promptly.</p>
+                <div className="text-xs font-bold text-emerald-300">
+                  Message sent successfully. I&apos;ll get back to you soon.
+                </div>
+                <p className="text-[11px] text-muted-foreground">
+                  Thank you for reaching out. Your transmission has been dispatched to Anunay.
+                </p>
+                <div className="pt-2">
+                  <button
+                    type="button"
+                    onClick={handleReset}
+                    className="text-[11px] font-mono text-accent-blue hover:underline focus:outline-none"
+                  >
+                    Send another message
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-3 text-xs">
+                {errorMessage && (
+                  <div className="p-2.5 rounded-apple-sm bg-rose-500/10 border border-rose-500/30 text-rose-300 text-[11px] flex items-start gap-2">
+                    <AlertCircle className="w-4 h-4 shrink-0 text-rose-400 mt-0.5" />
+                    <span className="flex-1">{errorMessage}</span>
+                  </div>
+                )}
+
+                {/* Honeypot field for bot detection */}
+                <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                  <label htmlFor="contact_hp_field">Do not fill this field</label>
+                  <input
+                    id="contact_hp_field"
+                    type="text"
+                    name="honeypot"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formData.honeypot}
+                    onChange={handleChange}
+                  />
+                </div>
+
                 <div>
-                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">Your Name</label>
+                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">
+                    Your Name
+                  </label>
                   <input
                     required
                     type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     placeholder="e.g. Recruiter / Hiring Manager"
-                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans"
+                    maxLength={100}
+                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans disabled:opacity-50"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">Your Email</label>
+                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">
+                    Your Email
+                  </label>
                   <input
                     required
                     type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
                     placeholder="name@company.com"
-                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans"
+                    maxLength={254}
+                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans disabled:opacity-50"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">Message</label>
+                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    placeholder="e.g. Project Discussion / Job Opportunity"
+                    maxLength={150}
+                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans disabled:opacity-50"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-muted-foreground font-mono text-[10px] mb-1">
+                    Message
+                  </label>
                   <textarea
                     required
+                    name="message"
                     rows={3}
-                    placeholder="Hello Anunay, we would love to discuss a opportunity..."
-                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans"
+                    value={formData.message}
+                    onChange={handleChange}
+                    disabled={isSubmitting}
+                    placeholder="Hello Anunay, we would love to discuss an opportunity..."
+                    maxLength={5000}
+                    className="w-full px-3 py-2 rounded-apple-sm bg-surface border border-border/80 text-foreground focus:outline-none focus:border-accent-blue font-sans disabled:opacity-50"
                   />
                 </div>
-                <Button type="submit" variant="primary" className="w-full">
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Send Message</span>
+
+                <Button
+                  type="submit"
+                  variant="primary"
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      <span>Transmitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-3.5 h-3.5" />
+                      <span>Send Message</span>
+                    </>
+                  )}
                 </Button>
               </form>
             )}

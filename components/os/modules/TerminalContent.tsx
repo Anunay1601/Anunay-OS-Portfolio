@@ -36,7 +36,7 @@ export function TerminalContent() {
               <div className="text-muted-foreground">----------------</div>
               <div><span className="text-accent-blue font-semibold">OS:</span> ANUNAY OS v1.0 Kernel (x86_64)</div>
               <div><span className="text-accent-blue font-semibold">Host:</span> VIT Bhopal University (B.Tech CSE AI & ML)</div>
-              <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: {profileData.cgpa})</div>
+              <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name}</div>
               <div><span className="text-accent-blue font-semibold">Location:</span> {profileData.location}</div>
               <div><span className="text-accent-blue font-semibold">Shell:</span> zsh 5.9 (x86_64-apple-darwin)</div>
               <div><span className="text-accent-blue font-semibold">Core Stack:</span> Java, Python, TypeScript, React, Next.js, n8n</div>
@@ -105,7 +105,7 @@ export function TerminalContent() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 pt-1">
               <div><span className="text-accent-blue font-bold">neofetch</span> — Display system kernel specs</div>
-              <div><span className="text-accent-blue font-bold">about</span> — Developer bio & CGPA details</div>
+              <div><span className="text-accent-blue font-bold">about</span> — Developer bio & academic overview</div>
               <div><span className="text-accent-blue font-bold">projects</span> — List all software systems</div>
               <div><span className="text-accent-blue font-bold">skills</span> — Display technical skill matrices</div>
               <div><span className="text-accent-blue font-bold">experience</span> — View internship deployments</div>
@@ -128,7 +128,7 @@ export function TerminalContent() {
             <div>{profileData.tagline}</div>
             <div className="text-muted-foreground">{profileData.summary}</div>
             <div className="pt-1 text-emerald-400 font-semibold">
-              {profileData.university} • B.Tech CSE (AI & ML) • CGPA: {profileData.cgpa}
+              {profileData.university} • B.Tech CSE (AI & ML)
             </div>
           </div>
         );
@@ -213,7 +213,6 @@ export function TerminalContent() {
                   <span className="text-muted-foreground text-[10px]">{edu.period}</span>
                 </div>
                 <div className="text-accent-blue">{edu.degree} — {edu.field}</div>
-                <div className="text-emerald-400 font-bold">{edu.grade}</div>
               </div>
             ))}
           </div>
@@ -316,7 +315,7 @@ export function TerminalContent() {
                 <div className="text-muted-foreground">----------------</div>
                 <div><span className="text-accent-blue font-semibold">OS:</span> ANUNAY OS v1.0 Kernel (x86_64)</div>
                 <div><span className="text-accent-blue font-semibold">Host:</span> VIT Bhopal University (B.Tech CSE AI & ML)</div>
-                <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name} (CGPA: {profileData.cgpa})</div>
+                <div><span className="text-accent-blue font-semibold">Developer:</span> {profileData.name}</div>
                 <div><span className="text-accent-blue font-semibold">Location:</span> {profileData.location}</div>
                 <div><span className="text-accent-blue font-semibold">Shell:</span> zsh 5.9 (x86_64-apple-darwin)</div>
                 <div><span className="text-accent-blue font-semibold">Core Stack:</span> Java, Python, TypeScript, React, Next.js, n8n</div>

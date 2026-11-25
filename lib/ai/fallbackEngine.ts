@@ -157,12 +157,12 @@ ${experienceData
   ) {
     return `### Current Academic & Technical Focus
 
-* **Degree & Field**: B.Tech in Computer Science Engineering (AI & ML) at **VIT Bhopal University** (2024–2028, **CGPA: ${profileData.cgpa}**).
+* **Degree & Field**: B.Tech in Computer Science Engineering (AI & ML) at **VIT Bhopal University** (2024–2028).
 * **Current Focus Areas**: Generative AI architectures, Agentic AI, n8n visual automation pipelines, cloud deployments (Render/Vercel), and high-performance WebGL 3D interfaces.
 * **Recent Certifications**: ServiceNow Virtual Internship (Jul 2026), Applied ML in Python (Univ. of Michigan), and NPTEL Programming with Generative AI.`;
   }
 
-  // 5. Education / University / CGPA Query
+  // 5. Education / University Query
   if (
     q.includes("education") ||
     q.includes("university") ||
@@ -179,7 +179,6 @@ ${educationData
     (ed) =>
       `* **${ed.institution}** (${ed.period})
   * **Degree**: ${ed.degree} in ${ed.field}
-  * **Grade**: ${ed.grade}
   ${ed.details ? `* **Highlights**: ${ed.details.join("; ")}` : ""}`
   )
   .join("\n\n")}`;
@@ -213,7 +212,7 @@ ${certificationsData
 * **Email**: [${profileData.email}](mailto:${profileData.email})
 * **GitHub**: [${profileData.github}](${profileData.github})
 * **LinkedIn**: [${profileData.linkedin}](${profileData.linkedin})
-* **University**: ${profileData.university} (**CGPA: ${profileData.cgpa}**)`;
+* **University**: ${profileData.university}`;
   }
 
   // 8. Fallback for unlisted/out-of-scope information

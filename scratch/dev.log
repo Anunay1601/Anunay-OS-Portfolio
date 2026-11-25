@@ -1,0 +1,16 @@
+
+> anunay-os@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3001
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling / ...
+ ✓ Compiled / in 8.3s (1534 modules)
+ GET / 200 in 8742ms
+ ✓ Compiled in 570ms (773 modules)
+ ○ Compiling /os ...
+ ✓ Compiled /os in 3.5s (1632 modules)
+ GET /os 200 in 3712ms

@@ -43,7 +43,7 @@ const MODULES: CommandItem[] = [
   { id: "project-lab", title: "Projects", subtitle: "Software systems & live code previews", category: "Module", icon: FolderGit2, windowId: "project-lab", sectionHash: "#projects" },
   { id: "dev-env", title: "Skills", subtitle: "Interconnected technology & stack matrix", category: "Module", icon: Code2, windowId: "dev-env", sectionHash: "#skills" },
   { id: "system-logs", title: "Experience", subtitle: "Workplace deployments & internships", category: "Module", icon: History, windowId: "system-logs", sectionHash: "#experience" },
-  { id: "education", title: "Education", subtitle: "Academic degree & CGPA details", category: "Module", icon: GraduationCap, windowId: "system-logs", sectionHash: "#education" },
+  { id: "education", title: "Education", subtitle: "Academic degree & university details", category: "Module", icon: GraduationCap, windowId: "system-logs", sectionHash: "#education" },
   { id: "credential-vault", title: "Certifications", subtitle: "Verified technical credentials", category: "Module", icon: Award, windowId: "credential-vault", sectionHash: "#certifications" },
   { id: "neural-core", title: "Neural Core", subtitle: "Interactive skill node network", category: "Module", icon: Cpu, windowId: "neural-core", sectionHash: "#about" },
   { id: "automation-core", title: "Automation", subtitle: "n8n visual workflow engine", category: "Module", icon: Workflow, windowId: "automation-core" },
